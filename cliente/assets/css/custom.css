@@ -1,0 +1,22 @@
+
+/* Validación de formularios */
+.messages {
+	padding: 0px;
+	margin-top: -15px;
+	margin-bottom: 15px;
+    color: #FA787E;
+  }
+  
+form.ng-submitted input.ng-invalid{
+	border-color: #FA787E;
+}
+
+form input.ng-invalid.ng-touched {
+	border-color: #FA787E;
+}
+
+
+/*form input.ng-valid.ng-touched {
+	border-color: #78FA89;
+}*/
+/* FIN Validación de formularios */

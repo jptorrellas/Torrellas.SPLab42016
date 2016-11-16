@@ -1,0 +1,60 @@
+
+<!--=== Content Part ===-->    
+<div class="container" style="background-image:url('assets/img/bg/19.jpg'); width:100%; height:100%;">
+    <!--Reg Block-->
+    <div class="reg-block">
+        <div class="reg-block-header">
+            <h2>Log In</h2>
+           
+            <p>No tienes una cuenta? Click <a class="color-green" href="page_registration1.html">aquí</a> para registrarte.</p>            
+        </div>
+
+        <form name="frmLogin" novalidate>
+
+            <div class="input-group margin-bottom-20">
+                <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
+                <input name="email" type="email" class="form-control" placeholder="Email" ng-model="loginData.email" required/>
+            </div>
+            <div class="messages" ng-show="frmLogin.$submitted || frmLogin.email.$touched">
+                <span ng-show="frmLogin.email.$error.required">El campo es obligatorio.</span>
+                <span ng-show="frmLogin.email.$error.email">Formato de email incorrecto.</span>
+            </div>
+
+            
+            <div class="input-group margin-bottom-20">
+                <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                <input name="nombre" type="text" class="form-control" placeholder="Nombre" ng-model="loginData.nombre" required>
+            </div>
+            <div class="messages" ng-show="frmLogin.$submitted || frmLogin.nombre.$touched">
+                <span ng-show="frmLogin.nombre.$error.required">El campo es obligatorio.</span>
+            </div>
+            
+            <div class="input-group margin-bottom-20">
+                <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+                <input name="password" type="password" class="form-control" placeholder="Password" ng-model="loginData.password" required>
+            </div>
+            <div class="messages" ng-show="frmLogin.$submitted || frmLogin.password.$touched">
+                <span ng-show="frmLogin.password.$error.required">El campo es obligatorio.</span>
+            </div>
+            <hr>
+
+            <div class="row">
+                <div class="col-md-10 col-md-offset-1">
+                    <button type="submit" class="btn-u btn-block" ng-click="login()" ng-disabled="frmLogin.$invalid">Log In</button>
+                    <!-- <input type="submit" ng-click="update()" value="Guardar" ng-disabled="userForm.$invalid" /> -->
+                </div>
+            </div>
+        </form>
+        
+        
+
+    </div>
+    <!--End Reg Block-->
+</div><!--/container-->
+<!--=== End Content Part ===-->
+
+
+
+
+ 
+

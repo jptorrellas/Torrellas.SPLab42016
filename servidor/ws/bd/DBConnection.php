@@ -16,7 +16,7 @@
 class DBConnection {
 	// Configuración de conexión a BD
 	private $servidorBD = "localhost";
-	private $nombreBD = "tsmobile";
+	private $nombreBD = "tp2parlab4";
 	private $usuarioBD = "root";
 	private $claveBD = "";
 	private $conn;
