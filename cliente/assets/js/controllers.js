@@ -4,7 +4,7 @@ angular.module('miSitio')
 
   // Para cargar la imagen del usuario en el menu-Perfil
   $scope.usuario = usuarioFactory.payload;
-  $scope.usuario.urlUserPerfilImg = URLServidor + URLUsersPerfilImg + usuarioFactory.payload.foto;
+  $scope.usuario.urlUserPerfilImg = URLServidor + URLimgPerfilUsuario + usuarioFactory.payload.foto;
 
   // Logout
   $scope.logout = function() { 
@@ -52,8 +52,7 @@ angular.module('miSitio')
           usuarioFactory.payload = payload;
 
           if (usuarioFactory.payload.rol == "admin") {
-            alert("login ok: admin");
-            // $state.go('admin.adminInicio');
+            $state.go('admin.adminInicio');
           }
           if (usuarioFactory.payload.rol == "comprador") {
             alert("login ok: comprador");

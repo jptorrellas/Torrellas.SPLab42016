@@ -34,7 +34,7 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider)
 			controller:"LoginCtrl"
 		})
 		
-		// ADMIN //
+		// ADMIN
 		.state('admin', {
 			cache: false,
 			url: '/Admin',
@@ -44,10 +44,10 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider)
 		})
 
 		.state('admin.adminInicio', {
-			cache: true,
+			cache: false,
 			url: '/inicio',
 			views: {
-			  'menuContent': {
+			  'contenido': {
 			    templateUrl: 'templates/admin/adminInicio.html',
 			    controller: 'AdminInicioCtrl'
 			  }

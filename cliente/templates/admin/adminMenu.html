@@ -1,19 +1,65 @@
-<div class="container" ng-controller="adminMenuCtrl" ng-view="menu">
-	<ul class="nav nav-tabs">
-         <li class="btn btn-info animated bounceInLeft" >
-         	<a href="#/menu/alta"><span class="glyphicon glyphicon-plus-sign">&nbsp;</span>Alta Votacion</a>
-         </li>
-         <li  class="btn btn-info animated bounceInLeft" >
-         	<a href="#/menu/grilla"><span class="glyphicon glyphicon-th" >&nbsp;</span>Grilla Votacion</a>
-         </li>
-         <li  class="btn btn-info animated bounceInLeft" >
-         	<a href="#/login"><span class="glyphicon glyphicon-th" >&nbsp;</span>Login</a>
-         </li>
-        
-        
-	</ul>
+<div class="header" style="background-image:url('assets/img/bg/bg-1.png');">
+    <div class="container" style="margin-left:25px; margin-right:25px;">
+        <!-- Logo -->
+        <div class="logo">
+            <div class="row">
+                <div class="col col-md-1">
+                     <img src="assets/img/logo/logo-fra.png" alt="Logo" height="60">
+                </div>
+                <div class="col col-md-3" style="margin-top:20px;">
+                    <h4><b>Torrellas Juan Pablo</b></h4>
+                    <hh5>Laboratorio IV - 2016</hh5>
+                    <h5></h5>
+                </div>
+            </div>   
+        </div>
+        <!-- End Logo -->
+
+        <!-- Toggle get grouped for better mobile display -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="fa fa-bars"></span>
+        </button>
+        <!-- End Toggle -->
+    </div><!--/end container-->
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse mega-menu navbar-responsive-collapse">
+        <div class="container" style="margin-right:25px;">
+            <ul class="nav navbar-nav" style="float:left;">
+                <li class="page-scroll">
+                    <a href="#clientes">Alta</a>
+                </li>
+
+                <li class="page-scroll">
+                    <a href="#clientes">Baja</a>
+                </li>
+
+                <!-- Demo Pages -->
+               <!--  <li class="dropdown">
+                    <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">
+                        Demos
+                    </a>
+                    <ul class="dropdown-menu pull-right">
+                        <li><a href="Themantic-Designs/Architecture/index.html">Architecture</a></li>
+                        <li><a href="Themantic-Designs/Travel/index.html">Travel</a></li>
+                    </ul>
+                </li> -->
+                <!-- End Demo Pages -->
+            </ul>
+            
+            <ul class="nav navbar-nav" style="float:right;">
+                <li class="page-scroll">
+                    <div class=" ">
+                        <img class="rounded-x inline-block" style="border:2px solid #555;" ng-src="{{usuario.urlUserPerfilImg}}" height="35">
+                        <div class="inline-block"><h6>{{usuario.nombre}}</h6></div>
+                        
+                    </div>
+                </li>
+            </ul>
+
+        </div><!--/end container-->
+    </div><!--/navbar-collapse-->
 </div>
 
-<div ui-view="contenido">
-
-</div>
+<div ui-view="contenido"></div>

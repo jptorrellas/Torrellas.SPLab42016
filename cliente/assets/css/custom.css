@@ -20,3 +20,9 @@ form input.ng-invalid.ng-touched {
 	border-color: #78FA89;
 }*/
 /* FIN Validación de formularios */
+
+.inline-block {
+	display: inline-block;
+}
+
+
