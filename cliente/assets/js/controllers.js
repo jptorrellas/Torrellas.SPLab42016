@@ -1,6 +1,6 @@
 angular.module('miSitio')
 
-.controller('AppCtrl', function($scope, $timeout, $state, $auth, usuarioFactory, URLServidor, URLimgPerfilUsuario) {
+.controller('AppCtrl', function($scope, $timeout, $state, $auth, usuarioFactory, URLServidor) {
 
   // Para cargar la imagen del usuario en el menu-Perfil
   $scope.usuario = usuarioFactory.payload;
@@ -108,9 +108,11 @@ angular.module('miSitio')
 
 
 //ADMIN
-.controller('AdminInicioCtrl', function($state, $scope, usuarioService, usuarioFactory, URLServidor, URLimgPerfilUsuario) {
+.controller('AdminInicioCtrl', function($state, $scope, usuarioService, usuarioFactory, URLServidor, i18nService, uiGridConstants) {
 
-  $scope.listaDeUsuarios = [];
+  $scope.rol = usuarioFactory.payload.rol;
+  $scope.directivaGrillaUsuariosDatos = {};
+  //$scope.gridOptions = {};
 
   $scope.traerTodosLosUsuariosData =
   {
@@ -124,8 +126,7 @@ angular.module('miSitio')
       function(respuesta) { 
 
         if (respuesta.estado == true) {
-          $scope.listaDeUsuarios = respuesta.datos;
-          //console.log($scope.listaDeUsuarios);
+          $scope.directivaGrillaUsuariosDatos.lista = {datos: respuesta.datos};
         }
         else {
           alert(respuesta.mensaje, 'middle', false, 2500); 
@@ -134,6 +135,97 @@ angular.module('miSitio')
     );
   };
   $scope.traerTodosLosUsuarios();
+
+
+
+  // // Objeto de configuracion de la grilla.
+  // $scope.gridOptions = {
+  //   // Configuracion para exportar datos.
+  //   exporterCsvFilename: 'misdatos.csv',
+  //   exporterCsvColumnSeparator: ';',
+  //   exporterPdfDefaultStyle: {fontSize: 9},
+  //   exporterPdfTableStyle: {margin: [30, 30, 30, 30]},
+  //   exporterPdfTableHeaderStyle: {fontSize: 10, bold: true, italics: true, color: 'red'},
+  //   exporterPdfHeader: { text: "My Header", style: 'headerStyle' },
+  //   exporterPdfFooter: function ( currentPage, pageCount ) {
+  //     return { text: currentPage.toString() + ' of ' + pageCount.toString(), style: 'footerStyle' };
+  //   },
+  //   exporterPdfCustomFormatter: function ( docDefinition ) {
+  //     docDefinition.styles.headerStyle = { fontSize: 22, bold: true };
+  //     docDefinition.styles.footerStyle = { fontSize: 10, bold: true };
+  //     return docDefinition;
+  //   },
+  //   exporterPdfOrientation: 'portrait',
+  //   exporterPdfPageSize: 'LETTER',
+  //   exporterPdfMaxGridWidth: 500,
+  //   exporterCsvLinkElement: angular.element(document.querySelectorAll(".custom-csv-link-location")),
+  //   onRegisterApi: function(gridApi){
+  //     $scope.gridApi = gridApi;
+  //   }
+  // };
+  
+  // $scope.gridOptions.enableGridMenu = true;
+  // $scope.gridOptions.selectAll = true;
+  // $scope.gridOptions.paginationPageSizes = [25, 50, 75];
+  
+  // // Configuracion de la paginacion
+  // $scope.gridOptions.paginationPageSize = 5;
+  // $scope.gridOptions.columnDefs = columnDefs();
+  
+  // // Activo la busqueda en todos los campos.
+  // $scope.gridOptions.enableFiltering = true;
+  
+  // // Configuracion del idioma.
+  // i18nService.setCurrentLang('es');
+
+
+  // // Cargo los datos en la grilla.
+  // // $scope.gridOptions.data = [{id:1,nombre:'juancito',email:'j@j.com',rol:'admin'},{id:2,nombre:'pepito',email:'p@p.com',rol:'cliente'},{id:2,nombre:'toto',email:'t@t.com',rol:'cendedor'}];
+  // usuarioService.traerTodosLosUsuarios($scope.traerTodosLosUsuariosData)
+  // .then( 
+  //   function(respuesta) { 
+
+  //     if (respuesta.estado == true) {
+  //       $scope.gridOptions.data = respuesta.datos;
+  //     }
+  //     else {
+  //       alert(respuesta.mensaje, 'middle', false, 2500); 
+  //     }
+  //   }
+  // );
+
+  // function columnDefs () {
+  //   return [
+  //     { 
+  //       field: 'id', 
+  //       name: '#', 
+  //       width: 45
+  //     },
+      
+  //     { 
+  //       field: 'nombre', 
+  //       name: 'Nombre',
+  //       enableFiltering: true
+  //     },
+      
+  //     { 
+  //       field: 'email', 
+  //       name: 'email',
+  //       enableFiltering: true
+  //     },
+      
+  //     { 
+  //       field: 'email', 
+  //       name: 'mail'
+  //     },
+      
+  //     { field: 'rol', 
+  //       name: 'rol',
+  //       enableFiltering: true
+  //     }
+  //   ];
+  // }
+
 });
 
 

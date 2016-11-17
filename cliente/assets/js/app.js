@@ -1,5 +1,6 @@
 
-var app = angular.module('miSitio', ['ui.router', 'angularFileUpload', 'satellizer']);//esto permite incluir el módulo 'ui.router' al módulo 'starter'
+var app = angular.module('miSitio', ['ui.router', 'angularFileUpload', 'satellizer', 'ui.grid', 'ui.grid.pagination', 'ui.grid.resizeColumns', 'ui.grid.selection', 'ui.grid.exporter', 'ui.grid.edit', 'ui.router']);
+
 
 app.run(function($http) {
 
@@ -72,5 +73,3 @@ app.constant('URLServidor', 'http://localhost/UTN/Github/Torrellas.SPLab42016/se
 
 // SUB-URL SERVICES
 app.constant('URLServices', 'services/');
-// SUB-URL USERS PERFIL IMG
-app.constant('URLimgPerfilUsuario', 'img/usuarios/');
