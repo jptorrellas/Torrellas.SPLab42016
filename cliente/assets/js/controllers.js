@@ -4,7 +4,6 @@ angular.module('miSitio')
 
   // Para cargar la imagen del usuario en el menu-Perfil
   $scope.usuario = usuarioFactory.payload;
-  $scope.usuario.urlUserPerfilImg = URLServidor + URLimgPerfilUsuario + usuarioFactory.payload.foto;
 
   // Logout
   $scope.logout = function() { 
@@ -41,7 +40,6 @@ angular.module('miSitio')
     $auth.login($scope.loginData, { timeout: 10000 })
     .then(
       function(respuesta) {
-        console.log(respuesta);
         if ($auth.isAuthenticated()) {
           
           // Guarda datos de usuario en usuarioFactory.payload
@@ -81,9 +79,61 @@ angular.module('miSitio')
   };
 })
 
+.controller('RegistroCtrl', function($state, $scope, usuarioService, usuarioFactory) {
+  $scope.registroData =
+  {
+    nombre: 'Prueba',
+    email: 'prueba@sitio.com',
+    password1: '123',
+    password2: '123',
+    rol: '2',
+    accion: 'registro'
+  };
+
+  $scope.registro = function() {
+    usuarioService.registro($scope.registroData) // Checkea que no exista el usuario, si no existe lo registra
+    .then( 
+      function(respuesta) {          
+        if (respuesta.estado == true) {
+          alert(respuesta.mensaje, 'middle', false, 2500);
+          $state.go('login');
+        }
+        else {
+          alert(respuesta.mensaje, 'middle', false, 2500); 
+        }
+      }
+    );
+  };
+})
+
+
 //ADMIN
-.controller('AdminInicioCtrl', function($state, $scope, $auth, usuarioService, usuarioFactory) {
-  console.log("entro al AdminInicioCtrl");
+.controller('AdminInicioCtrl', function($state, $scope, usuarioService, usuarioFactory, URLServidor, URLimgPerfilUsuario) {
+
+  $scope.listaDeUsuarios = [];
+
+  $scope.traerTodosLosUsuariosData =
+  {
+    accion: 'traerTodosLosUsuarios'
+  };
+
+  $scope.traerTodosLosUsuarios = function() {
+
+    usuarioService.traerTodosLosUsuarios($scope.traerTodosLosUsuariosData)
+    .then( 
+      function(respuesta) { 
+
+        if (respuesta.estado == true) {
+          $scope.listaDeUsuarios = respuesta.datos;
+          //console.log($scope.listaDeUsuarios);
+        }
+        else {
+          alert(respuesta.mensaje, 'middle', false, 2500); 
+        }
+      }
+    );
+  };
+  $scope.traerTodosLosUsuarios();
 });
 
 

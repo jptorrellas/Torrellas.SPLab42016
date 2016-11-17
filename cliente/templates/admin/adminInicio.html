@@ -1,6 +1,10 @@
-<div class="container" ng-app="miSitio" ng-controller="adminInicioCtrl" ng-view="contenido" style="margin-top:100px;">
-
+<div class="container" ng-app="miSitio" ng-controller="AdminInicioCtrl" ng-view="contenido" style="margin-top:100px;">
 	<div>
 	   <h1>ESTOY EN ADMIN INICIO</h1>
 	</div>
+	
+	<div ng-repeat="usuario in listaDeUsuarios">
+		<lista-de-usuarios usuario="usuario"></lista-de-usuarios>
+	</div>
 </div>
+

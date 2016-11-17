@@ -1,0 +1,69 @@
+<!-- CSS Page Style -->    
+<link rel="stylesheet" href="assets/css/pages/page_log_reg_v2.css">  
+
+<!--=== Content Part ===-->    
+<div class="container" style="background-image:url('assets/img/bg/19.jpg'); width:100%; height:100%;">
+    <!--Reg Block-->
+    <div class="reg-block">
+        <div class="reg-block-header">
+            <h2>Registro</h2>
+        </div>
+
+        <form name="frmRegistro" novalidate>
+
+            <div class="input-group margin-bottom-20">
+                <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
+                <input name="email" type="email" class="form-control" placeholder="Email" ng-model="registroData.email" required/>
+            </div>
+            <div class="messages" ng-show="frmRegistro.$submitted || frmRegistro.email.$touched">
+                <span ng-show="frmRegistro.email.$error.required">El campo es obligatorio.</span>
+                <span ng-show="frmRegistro.email.$error.email">Formato de email incorrecto.</span>
+            </div>
+
+            
+            <div class="input-group margin-bottom-20">
+                <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                <input name="nombre" type="text" class="form-control" placeholder="Nombre" ng-model="registroData.nombre" required>
+            </div>
+            <div class="messages" ng-show="frmRegistro.$submitted || frmRegistro.nombre.$touched">
+                <span ng-show="frmRegistro.nombre.$error.required">El campo es obligatorio.</span>
+            </div>
+            
+            <div class="input-group margin-bottom-20">
+                <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+                <input name="password1" type="password" class="form-control" placeholder="Ingrese Password" ng-model="registroData.password1" required>
+            </div>
+            <div class="messages" ng-show="frmRegistro.$submitted || frmRegistro.password1.$touched">
+                <span ng-show="frmRegistro.password1.$error.required">El campo es obligatorio.</span>
+            </div>
+
+            <div class="input-group margin-bottom-20">
+                <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+                <input name="password2" type="password" class="form-control" placeholder="Reingrese Password" ng-model="registroData.password2" required>
+            </div>
+            <div class="messages" ng-show="frmRegistro.$submitted || frmRegistro.password2.$touched">
+                <span ng-show="frmRegistro.password2.$error.required">El campo es obligatorio.</span>
+                <span ng-show="registroData.password1 != registroData.password2">Los passwords no coinciden.</span>
+            </div>
+            <hr>
+
+            <div class="row">
+                <div class="col-md-10 col-md-offset-1">
+                    <button type="submit" class="btn-u btn-block" ng-click="registro()" ng-disabled="frmRegistro.$invalid || registroData.password1 != registroData.password2">Registrarse</button>
+                    <!-- <input type="submit" ng-click="update()" value="Guardar" ng-disabled="userForm.$invalid" /> -->
+                </div>
+            </div>
+        </form>
+        
+        <hr>
+
+    </div>
+    <!--End Reg Block-->
+</div><!--/container-->
+<!--=== End Content Part ===-->
+
+
+
+
+ 
+

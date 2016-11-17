@@ -26,7 +26,17 @@
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse mega-menu navbar-responsive-collapse">
         <div class="container" style="margin-right:25px;">
-            <ul class="nav navbar-nav" style="float:left;">
+
+            <ul class="nav navbar-nav" style="float:right;">
+                <li class="page-scroll">
+                    <div class=" ">
+                        <img class="rounded-x inline-block" style="border:2px solid #555;" ng-src="{{usuario.foto}}" height="35">
+                        <div class="inline-block"><h6><b>{{usuario.nombre}}</b></h6></div>                       
+                    </div>
+                </li>
+            </ul>
+
+            <ul class="nav navbar-nav" style="float:right;">
                 <li class="page-scroll">
                     <a href="#clientes">Alta</a>
                 </li>
@@ -48,15 +58,7 @@
                 <!-- End Demo Pages -->
             </ul>
             
-            <ul class="nav navbar-nav" style="float:right;">
-                <li class="page-scroll">
-                    <div class=" ">
-                        <img class="rounded-x inline-block" style="border:2px solid #555;" ng-src="{{usuario.urlUserPerfilImg}}" height="35">
-                        <div class="inline-block"><h6>{{usuario.nombre}}</h6></div>
-                        
-                    </div>
-                </li>
-            </ul>
+            
 
         </div><!--/end container-->
     </div><!--/navbar-collapse-->

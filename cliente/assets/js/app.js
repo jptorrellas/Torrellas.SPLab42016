@@ -33,6 +33,13 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider)
 			templateUrl:"templates/login.html",
 			controller:"LoginCtrl"
 		})
+
+		.state("registro", {
+			cache: false,
+			url:"/registro",
+			templateUrl:"templates/registro.html",
+			controller:"RegistroCtrl"
+		})
 		
 		// ADMIN
 		.state('admin', {

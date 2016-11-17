@@ -55,7 +55,7 @@ class Crud extends DBConnection
 	public function insert($tabla, $campos, $valores)
 	{
 		// Protege de SQL injection
-		if ($this->protectQuery([$tabla, $campos, $condiciones])) {
+		if ($this->protectQuery([$tabla, $campos, $valores])) {
 			// Conexión a BD
 			$conn = parent::connectBD();
 
@@ -157,7 +157,7 @@ class Crud extends DBConnection
 	public function selectJoin($campos, $tabla1, $tabla2, $condiciones)
 	{
 		// Protege de SQL injection
-		if ($this->protectQuery([$tabla, $campos, $condiciones])) {
+		if ($this->protectQuery([$campos, $tabla1, $tabla2, $condiciones])) {
 			// Conexión a BD
 			$conn = parent::connectBD();
 
@@ -190,7 +190,7 @@ class Crud extends DBConnection
 	public function update($tabla, $camposYvalores, $condiciones)
 	{
 		// Protege de SQL injection
-		if ($this->protectQuery([$tabla, $campos, $condiciones])) {
+		if ($this->protectQuery([$tabla, $camposYvalores, $condiciones])) {
 			// Conexión a BD
 			$conn = parent::connectBD();
 
@@ -222,7 +222,7 @@ class Crud extends DBConnection
 	public function delete($tabla, $condiciones)
 	{
 		// Protege de SQL injection
-		if ($this->protectQuery([$tabla, $campos, $condiciones])) {
+		if ($this->protectQuery([$tabla, $condiciones])) {
 			// Conexión a BD
 			$conn = parent::connectBD();
 

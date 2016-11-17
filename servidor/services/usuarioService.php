@@ -81,6 +81,50 @@ switch ($objRecibido->accion) {
 		}
 		break;
 
+	case 'registro':
+		
+		ini_set('date.timezone','America/Buenos_Aires'); 
+		$fechaActual = date("Y-m-d H:i:s");
+
+		$usuario = $crud->select("usuarios", "*", "email = '$objRecibido->email'");
+		// Si existe un usuario con ese mail devuelve un error
+		if ($usuario != null) {
+			$respuesta['mensaje'] = 'error';
+			echo json_encode($respuesta);
+		}
+		else {
+			if($crud->insert("usuarios", "nombre, email, password, id_rol, fecha_alta", "'$objRecibido->nombre', '$objRecibido->email', '$objRecibido->password1', '$objRecibido->rol', '$fechaActual'")) {
+
+				$respuesta['mensaje'] = 'ok';
+				echo json_encode($respuesta);
+			}
+			else {
+				$respuesta['mensaje'] = 'error';
+				echo json_encode($respuesta);
+			}
+		}
+		break;
+
+	case 'traerTodosLosUsuarios':
+		
+		$tabla1 = 'usuarios';
+		$tabla2 = 'roles';
+		$campos = 'usuarios.id, usuarios.nombre, usuarios.email, usuarios.password, usuarios.foto, roles.descripcion as rol';
+		$condicion = 'usuarios.id_rol = roles.id';
+
+		$listaElementos = $crud->selectJoin("$campos", "$tabla1", "$tabla2", "$condicion");
+    	if ($listaElementos != null && $listaElementos != false) {
+
+    		$respuesta['mensaje'] = 'ok';
+			$respuesta['datos'] = $listaElementos;
+			echo json_encode($respuesta);
+    	}
+    	else {
+    		$respuesta['mensaje'] = 'error';
+			echo json_encode($respuesta);
+    	}
+		break;
+
 	default:
 		echo "error";
 		break;
