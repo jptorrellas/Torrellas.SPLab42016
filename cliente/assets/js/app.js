@@ -44,7 +44,7 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider)
 		
 		// ADMIN
 		.state('admin', {
-			cache: true,
+			cache: false,
 			url: '/admin',
 			abstract: true,
 			templateUrl: 'templates/admin/adminMenu.html',
@@ -84,3 +84,6 @@ app.constant('URLServidor', 'http://localhost/UTN/Github/Torrellas.SPLab42016/se
 
 // SUB-URL SERVICES
 app.constant('URLServices', 'services/');
+
+// SUB-URL SERVICES
+app.constant('URLimgUsuarioPerfil', 'img/usuarios/');

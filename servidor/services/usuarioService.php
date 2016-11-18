@@ -168,12 +168,34 @@ switch ($objRecibido->accion) {
 		}
 		break;
 
+	case 'borrarUsuario':
+    	
+    	$usuario = $crud->select("usuarios", "*", "id = '$objRecibido->idUsuario' && estado = 1");
+
+		if ($usuario != false && $usuario != null) {
+
+	    	if ($crud->update("usuarios", "estado = 0", "id = '$objRecibido->idUsuario'")) {
+	    		$respuesta['mensaje'] = 'ok';
+				echo json_encode($respuesta);
+	    	}
+	    	else {
+	    		$respuesta['mensaje'] = 'error';
+				echo json_encode($respuesta);
+	    	}
+	    }
+	    else {
+	    	$respuesta['mensaje'] = 'error';
+			echo json_encode($respuesta);
+	    }
+
+    	break;
+
 	case 'traerTodosLosUsuarios':
 		
 		$tabla1 = 'usuarios';
 		$tabla2 = 'roles';
 		$campos = 'usuarios.id, usuarios.nombre, usuarios.email, usuarios.password, usuarios.foto, roles.descripcion as rol';
-		$condicion = 'usuarios.id_rol = roles.id';
+		$condicion = "usuarios.id_rol = roles.id WHERE usuarios.estado = 1";
 
 		$listaElementos = $crud->selectJoin("$campos", "$tabla1", "$tabla2", "$condicion");
     	if ($listaElementos != null && $listaElementos != false) {

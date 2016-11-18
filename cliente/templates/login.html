@@ -25,7 +25,7 @@
             
             <div class="input-group margin-bottom-20">
                 <span class="input-group-addon"><i class="fa fa-user"></i></span>
-                <input name="nombre" type="text" class="form-control" placeholder="Nombre" ng-model="loginData.nombre" required>
+                <input name="nombre" type="text" class="form-control" placeholder="Nombre" ng-model="loginData.nombre" required/>
             </div>
             <div class="messages" ng-show="frmLogin.$submitted || frmLogin.nombre.$touched">
                 <span ng-show="frmLogin.nombre.$error.required">El campo es obligatorio.</span>
@@ -33,7 +33,7 @@
             
             <div class="input-group margin-bottom-20">
                 <span class="input-group-addon"><i class="fa fa-lock"></i></span>
-                <input name="password" type="password" class="form-control" placeholder="Password" ng-model="loginData.password" required>
+                <input name="password" type="password" class="form-control" placeholder="Password" ng-model="loginData.password" required/>
             </div>
             <div class="messages" ng-show="frmLogin.$submitted || frmLogin.password.$touched">
                 <span ng-show="frmLogin.password.$error.required">El campo es obligatorio.</span>
@@ -68,7 +68,7 @@
 </div><!--/container-->
 <!--=== End Content Part ===-->
 
-
+<!-- Popup Recuperar Password -->
 <div class="modal fade" id="responsive" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
     <form name="frmRecuperarPassword" novalidate>
         <div class="modal-dialog">
@@ -97,9 +97,3 @@
         </div>
     </form>
 </div>
-
-
-
-
- 
-

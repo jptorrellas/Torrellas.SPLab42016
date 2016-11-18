@@ -4,13 +4,14 @@ angular.module('miSitio')
 
     return {
       scope:{
-        // usuario: '=usuario'
         directivaGrillaUsuariosDatos: '=directivagrillausuariosdatos',
-        rol: '@rol'
+        rol: '@rol',
+        urlimg: '@urlimg'     
       },
       replace: true,
       restrict: "E",
-      templateUrl: "templates/directivas/dirGrillaDeUsuarios.html"
-    }
+      templateUrl: "templates/directivas/dirGrillaDeUsuarios.html",
+      controller: "DirectivasCtrl"
+    };
 
   });

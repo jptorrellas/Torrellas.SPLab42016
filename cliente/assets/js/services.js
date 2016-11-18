@@ -47,7 +47,33 @@ angular.module('miSitio')
     	);
 	};
 
-	this.recuperaPassword = function(data){
+	this.borrarUsuario = function(data) {
+
+		var urlCompleta = URLServidor + URLServices + "usuarioService.php";
+
+    	return $http.post(urlCompleta, data,  { timeout: 10000 })
+    	.then(
+  			function(retorno){ // Función a ejecutarse en caso de éxito        
+    			if (retorno.data.mensaje == "ok") {
+    				respuesta.estado = true;
+    				respuesta.mensaje = "Usuario Borrado!";
+	    			return respuesta;
+    			}
+    			else{
+    				respuesta.estado = false;
+    				respuesta.mensaje = "ERROR: Problema al intentar borrar usuario.";
+    				return respuesta;
+    			}	
+  			},
+  			function(retorno){ // Función a ejecutarse en caso de fallo
+    			respuesta.estado = false;
+    			respuesta.mensaje = "ERROR: Problema de conexion con el servidor.";
+    			return respuesta;
+  			}
+    	);
+	};	
+
+	this.recuperaPassword = function(data) {
 
 		var urlCompleta = URLServidor + URLServices + "usuarioService.php";
 

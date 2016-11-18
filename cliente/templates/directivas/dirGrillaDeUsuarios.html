@@ -2,28 +2,29 @@
     <div class="panel-heading">
         <h3 class="panel-title"><i class="fa fa-tasks"></i> Lista de usuarios</h3>
     </div>
-    <table class="table">
+    <table class="table table-hover" style="vertical-align:middle !important;">
         <thead>
             <tr>
-                <th style="text-align:center !important;">#</th>
-                <th style="text-align:center !important;">FOTO</th>
+                <th style="text-align:center">#</th>
+                <th style="text-align:center">FOTO</th>
                 <th>NOMBRE</th>
                 <th>EMAIL</th>
                 <th>ROL</th>
-                <th ng-if="rol == 'admin'">Editar</th>
-                <th ng-if="rol == 'admin'">Borrar</th>
+                <th ng-if="rol == 'admin'" style="text-align:center;">OPCIONES</th>
             </tr>
         </thead>
-        <tbody ng-repeat="usuario in directivaGrillaUsuariosDatos.lista.datos">
-        				
+        <tbody ng-repeat="usuario in directivaGrillaUsuariosDatos.lista.datos" style="align:middle;">			
 			<tr>
-				<td style="text-align:center !important;">{{usuario.id}}</td>
-			    <td style="text-align:center !important;"><img style="width:50px; border-radius:50%;" ng-src="{{usuario.foto}}"></td>
+				<td style="text-align:center;">{{usuario.id}}</td>
+			    <td style="text-align:center;"><img style="width:50px; border-radius:50%;" ng-src="{{urlimg}}{{usuario.foto}}"></td>
 			    <td>{{usuario.nombre}}</td>
 			    <td>{{usuario.email}}</td>
 			    <td>{{usuario.rol}}</td>
-			    <td ng-if="rol == 'admin'"><button class="btn btn-warning btn-xs"><i class="fa fa-pencil" ng-click="EditarUsuario(usuario)"></i> Editar</button></td>
-			    <td ng-if="rol == 'admin'"><button class="btn btn-danger btn-xs"><i class="fa fa-trash" ng-click="BorrarUsuario(usuario)"></i> Borrar</button></td>
+			    <td ng-if="rol == 'admin'" style="text-align:center;">
+                    <button class="btn btn-warning btn-xs" ng-click="EditarUsuario(usuario);"><i class="fa fa-pencil"></i> Editar</button>
+                    <button class="btn btn-danger btn-xs" ng-click="borrarUsuario(usuario, $index);"><i class="fa fa-trash"></i> Borrar</button>
+                </td>
+			    <!-- <td ng-if="rol == 'admin'"><button class="btn btn-danger btn-xs" ng-click="borrarUsuario(usuario);"><i class="fa fa-trash"></i> Borrar</button></td> -->
 			</tr>
 		</tbody>
 	</table>

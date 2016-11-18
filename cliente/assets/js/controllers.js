@@ -1,9 +1,10 @@
 angular.module('miSitio')
 
-.controller('AppCtrl', function($scope, $timeout, $state, $auth, usuarioFactory, URLServidor) {
+.controller('AppCtrl', function($scope, $timeout, $state, $auth, usuarioFactory, URLServidor, URLimgUsuarioPerfil) {
 
   // Para cargar la imagen del usuario en el menu-Perfil
   $scope.usuario = usuarioFactory.payload;
+  $scope.usuario.URLimgUsuarioPerfil = URLServidor + URLimgUsuarioPerfil + usuarioFactory.payload.foto;
 
   // Logout
   $scope.logout = function() { 
@@ -27,9 +28,9 @@ angular.module('miSitio')
 
   $scope.loginData = 
   {
-    email: '',
-    nombre: '',
-    password : ''
+    email: 'admin@sitio.com',
+    nombre: 'Juan',
+    password : '123'
   };
 
   $scope.recuperaPasswordData =
@@ -101,25 +102,49 @@ angular.module('miSitio')
   };
 })
 
-.controller('RegistroCtrl', function($state, $scope, usuarioService, usuarioFactory) {
+// .controller('RegistroCtrl', function($state, $scope, usuarioService, usuarioFactory) {
   
-  $scope.altaUsuarioData =
-  {
-    nombre: 'Prueba',
-    email: 'prueba@sitio.com',
-    password1: '123',
-    password2: '123',
-    rol: '2',
-    accion: 'altaUsuario'
-  };
+//   $scope.altaUsuarioData =
+//   {
+//     nombre: 'Prueba',
+//     email: 'prueba@sitio.com',
+//     password1: '123',
+//     password2: '123',
+//     rol: '2',
+//     accion: 'altaUsuario'
+//   };
 
-  $scope.altaUsuario = function() {
-    usuarioService.altaUsuario($scope.altaUsuarioData)
+//   $scope.altaUsuario = function() {
+//     usuarioService.altaUsuario($scope.altaUsuarioData)
+//     .then( 
+//       function(respuesta) {          
+//         if (respuesta.estado == true) {
+//           alert("Te acabas de registrar en el sistema! Ya puedes acceder con tus credenciales.")
+//           $state.go('login');
+//         }
+//         else {
+//           alert(respuesta.mensaje); 
+//         }
+//       }
+//     );
+//   };
+// })
+
+.controller('DirectivasCtrl', function($state, $scope, usuarioService, usuarioFactory, URLServidor, URLimgUsuarioPerfil) {
+  
+  $scope.borrarUsuario = function(usuario, index) {
+
+    $scope.borrarUsuarioData = { idUsuario : usuario.id, accion : 'borrarUsuario' };
+
+    alert("usuario directiva! " +   $scope.borrarUsuarioData.idUsuario);
+
+    usuarioService.borrarUsuario($scope.borrarUsuarioData)
     .then( 
-      function(respuesta) {          
+      function(respuesta) { 
+
         if (respuesta.estado == true) {
-          alert("Te acabas de registrar en el sistema! Ya puedes acceder con tus credenciales.")
-          $state.go('login');
+          alert(respuesta.mensaje);
+          $scope.directivaGrillaUsuariosDatos.lista.datos.splice(index, 1);
         }
         else {
           alert(respuesta.mensaje); 
@@ -127,27 +152,24 @@ angular.module('miSitio')
       }
     );
   };
+
 })
 
 
 //ADMIN
-.controller('AdminGrillaUsuariosCtrl', function($state, $scope, usuarioService, usuarioFactory, URLServidor) {
+.controller('AdminGrillaUsuariosCtrl', function($state, $scope, usuarioService, usuarioFactory, URLServidor, URLimgUsuarioPerfil) {
 
+  // Parámetros que se usan en la directiva
   $scope.rol = usuarioFactory.payload.rol;
+  $scope.urlimg = URLServidor + URLimgUsuarioPerfil;
   $scope.directivaGrillaUsuariosDatos = {};
-  //$scope.gridOptions = {};
 
-  $scope.traerTodosLosUsuariosData =
-  {
-    accion: 'traerTodosLosUsuarios'
-  };
+  $scope.traerTodosLosUsuariosData = { accion: 'traerTodosLosUsuarios' };
 
-  $scope.traerTodosLosUsuarios = function() {
-
+  function traerTodosLosUsuarios() {
     usuarioService.traerTodosLosUsuarios($scope.traerTodosLosUsuariosData)
     .then( 
       function(respuesta) { 
-
         if (respuesta.estado == true) {
           $scope.directivaGrillaUsuariosDatos.lista = {datos: respuesta.datos};
         }
@@ -157,7 +179,8 @@ angular.module('miSitio')
       }
     );
   };
-  $scope.traerTodosLosUsuarios();
+  traerTodosLosUsuarios();
+  // Fin Parámetros que se usan en la directiva
 
 })
 

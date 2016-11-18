@@ -31,7 +31,11 @@ form input.ng-invalid.ng-touched {
  }
 
  .header .dropdown-custom > a:after, .header .dropdown-submenu > a:after {
- display:none;
+ 	display:none;
  }
+
+.table>tbody>tr>th, .table>tbody>tr>td, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th {
+	vertical-align: middle !important;
+}
 
 
