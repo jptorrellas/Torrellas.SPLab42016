@@ -30,7 +30,7 @@ angular.module('miSitio')
     			}
     			if (retorno.data.mensaje == "error") {
     				respuesta.estado = false;
-    				respuesta.mensaje = "ERROR: Ya existe el usuario.";
+    				respuesta.mensaje = "Ya existe un usuario con ese email";
     				return respuesta;
     			}
     			if (retorno.data.mensaje != "ok" && retorno.data != "error") {
@@ -41,7 +41,7 @@ angular.module('miSitio')
   			},
   			function(error){ // Función a ejecutarse en caso de fallo
     			respuesta.estado = false;
-    			respuesta.mensaje = "ERROR: Problema de conexion con el servidor.";
+    			respuesta.mensaje = "Problema de conexión con el servidor.";
     			return respuesta;
   			}
     	);
@@ -61,13 +61,13 @@ angular.module('miSitio')
     			}
     			else{
     				respuesta.estado = false;
-    				respuesta.mensaje = "ERROR: Problema al intentar borrar usuario.";
+    				respuesta.mensaje = "Hubo un problema al intentar borrar usuario.";
     				return respuesta;
     			}	
   			},
   			function(retorno){ // Función a ejecutarse en caso de fallo
     			respuesta.estado = false;
-    			respuesta.mensaje = "ERROR: Problema de conexion con el servidor.";
+    			respuesta.mensaje = "Problema de conexión con el servidor.";
     			return respuesta;
   			}
     	);
@@ -87,13 +87,13 @@ angular.module('miSitio')
     			}
     			else{
     				respuesta.estado = false;
-    				respuesta.mensaje = "ERROR: Usuario no encontrado.";
+    				respuesta.mensaje = "El email ingresado no pertenece a ningún usuario del sistema";
     				return respuesta;
     			}	
   			},
   			function(retorno){ // Función a ejecutarse en caso de fallo
     			respuesta.estado = false;
-    			respuesta.mensaje = "ERROR: Problema de conexion con el servidor.";
+    			respuesta.mensaje = "Problema de conexión con el servidor.";
     			return respuesta;
   			}
     	);
@@ -128,7 +128,7 @@ angular.module('miSitio')
 			},
 			function(error){ // Función a ejecutarse en caso de fallo
 				respuesta.estado = false;
-				respuesta.mensaje = "ERROR: Problema de conexion con el servidor.";
+				respuesta.mensaje = "Problema de conexión con el servidor.";
 				respuesta.datos = 'error';
 				return respuesta;
 			}
@@ -164,7 +164,7 @@ angular.module('miSitio')
  //  			},
  //  			function(retorno){ // Función a ejecutarse en caso de fallo
  //    			respuesta.estado = false;
- //    			respuesta.mensaje = "ERROR: Problema de conexion con el servidor.";
+ //    			respuesta.mensaje = "Problema de conexión con el servidor.";
  //    			return respuesta;
  //  			}
  //    	);
@@ -198,7 +198,7 @@ angular.module('miSitio')
  //  			},
  //  			function(retorno){ // Función a ejecutarse en caso de fallo
  //    			respuesta.estado = false;
- //    			respuesta.mensaje = "ERROR: Problema de conexion con el servidor.";
+ //    			respuesta.mensaje = "Problema de conexión con el servidor.";
  //    			return respuesta;
  //  			}
  //    	);
@@ -223,7 +223,7 @@ angular.module('miSitio')
  //  			},
  //  			function(retorno){ // Función a ejecutarse en caso de fallo
  //    			respuesta.estado = false;
- //    			respuesta.mensaje = "ERROR: Problema de conexion con el servidor.";
+ //    			respuesta.mensaje = "Problema de conexión con el servidor.";
  //    			return respuesta;
  //  			}
  //    	);
@@ -258,7 +258,7 @@ angular.module('miSitio')
 	// 		},
 	// 		function(retorno){ // Función a ejecutarse en caso de fallo
 	// 			respuesta.estado = false;
-	// 			respuesta.mensaje = "ERROR: Problema de conexion con el servidor.";
+	// 			respuesta.mensaje = "Problema de conexión con el servidor.";
 	// 			respuesta.datos = 'error';
 	// 			return respuesta;
 	// 		}
@@ -296,7 +296,7 @@ angular.module('miSitio')
 	// 		},
 	// 		function(retorno){ // Función a ejecutarse en caso de fallo
 	// 			respuesta.estado = false;
-	// 			respuesta.mensaje = "ERROR: Problema de conexion con el servidor.";
+	// 			respuesta.mensaje = "Problema de conexión con el servidor.";
 	// 			respuesta.datos = 'error';
 	// 			return respuesta;
 	// 		}
@@ -334,7 +334,7 @@ angular.module('miSitio')
 	// 		},
 	// 		function(retorno){ // Función a ejecutarse en caso de fallo
 	// 			respuesta.estado = false;
-	// 			respuesta.mensaje = "ERROR: Problema de conexion con el servidor.";
+	// 			respuesta.mensaje = "Problema de conexión con el servidor.";
 	// 			respuesta.datos = 'error';
 	// 			return respuesta;
 	// 		}

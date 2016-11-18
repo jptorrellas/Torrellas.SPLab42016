@@ -1,5 +1,5 @@
 
-var app = angular.module('miSitio', ['ui.router', 'angularFileUpload', 'satellizer', 'naif.base64']);
+var app = angular.module('miSitio', ['ui.router', 'angularFileUpload', 'satellizer', 'naif.base64', 'angular-growl']);
 
 
 app.run(function($http) {
@@ -35,11 +35,11 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider)
 			controller:"LoginCtrl"
 		})
 
-		.state("registro", {
+		.state("altaUsuario", {
 			cache: false,
-			url:"/registro",
+			url:"/altaUsuario",
 			templateUrl:"templates/altaUsuario.html",
-			controller:"RegistroCtrl"
+			controller:"AltaUsuarioCtrl"
 		})
 		
 		// ADMIN
@@ -68,7 +68,7 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider)
 			views: {
 			  'contenido': {
 			    templateUrl: 'templates/altaUsuario.html',
-			    controller: 'AdminAltaUsuarioCtrl'
+			    controller: 'AltaUsuarioCtrl'
 			  }
 			}
 		})

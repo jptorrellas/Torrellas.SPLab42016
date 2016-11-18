@@ -28,8 +28,9 @@
     <link rel="stylesheet" href="assets/plugins/font-awesome/css/font-awesome.min.css">
     <link rel="stylesheet" href="assets/plugins/sky-forms-pro/skyforms/custom/custom-sky-forms.css">
     <link rel="stylesheet" href="assets/plugins/sky-forms-pro/skyforms/css/sky-forms.css">
+    <link rel="stylesheet" href="assets/css/pages/page_log_reg_v2.css"> 
 
-    <!-- <link rel="stylesheet" href="assets/plugins/angular-ui-grid/ui-grid.css">  -->
+    
 
     <!-- CSS Theme -->    
     <link rel="stylesheet" href="assets/css/theme-colors/default.css" id="style_color">
@@ -47,8 +48,11 @@
 	<script src="assets/plugins/angular-file-upload/dist/angular-file-upload.min.js"></script>
     <script src="assets/plugins/satellizer/satellizer.min.js"></script>
     <script src="assets/plugins/angular-base64-upload/dist/angular-base64-upload.min.js"></script>
+    <link href="assets/plugins/angular-growl-2/build/angular-growl.css" rel="stylesheet">
+    <script src="assets/plugins/angular-growl-2/build/angular-growl.min.js"></script>
 
 
+    <!-- <link rel="stylesheet" href="assets/plugins/angular-ui-grid/ui-grid.css">  -->
     <!-- <script src="assets/plugins/angular-ui-grid/ui-grid.min.js"></script> -->
     <!-- <script src="assets/plugins/pdfmake/pdfmake.min.js"></script> -->
     <!-- <script src="assets/plugins/pdfmake/vfs_fonts.js"></script> -->
@@ -63,8 +67,6 @@
 	<script type="text/javascript" src="assets/plugins/back-to-top.js"></script>
 	<script type="text/javascript" src="assets/plugins/smoothScroll.js"></script>
 	
-    <!-- JS Customization -->
-	<!-- <script type="text/javascript" src="assets/js/custom.js"></script> -->
 	<!-- JS Page Level -->           
 	<script type="text/javascript" src="assets/plugins/app.js"></script>
 
@@ -75,7 +77,8 @@
     <script SRC="assets/js/directivas.js" TYPE="text/javascript"></script>
 	
 </head>
-<body ng-app="miSitio">
-	<div ui-view></div>
+<body ng-app="miSitio" style="background:#FFF5EE;">
+    <div growl></div>
+	<div ui-view style="background:#FFF5EE;"></div>
 </body>
 </html>

@@ -1,6 +1,6 @@
 angular.module('miSitio')
 
-.controller('AppCtrl', function($scope, $timeout, $state, $auth, usuarioFactory, URLServidor, URLimgUsuarioPerfil) {
+.controller('AppCtrl', function($scope, $timeout, $state, $auth, growl, usuarioFactory, URLServidor, URLimgUsuarioPerfil) {
 
   // Para cargar la imagen del usuario en el menu-Perfil
   $scope.usuario = usuarioFactory.payload;
@@ -11,6 +11,8 @@ angular.module('miSitio')
     // Desconectamos al usuario
     $auth.logout()
     .then(function() {
+        // Mensaje de despedida
+        growl.info("Hasta pronto " + $scope.usuario.nombre + "!", {ttl: 5000});
         // Vacía usuarioFactory.payload
         usuarioFactory.payload = {};
         usuarioFactory.password = {};
@@ -22,7 +24,7 @@ angular.module('miSitio')
 })
 
 //TODOS
-.controller('LoginCtrl', function($state, $scope, $auth, usuarioService, usuarioFactory) {
+.controller('LoginCtrl', function($state, $scope, $auth, growl, usuarioService, usuarioFactory) {
 
   var respuesta = {};
 
@@ -30,19 +32,18 @@ angular.module('miSitio')
   {
     email: 'admin@sitio.com',
     nombre: 'Juan',
-    password : '123'
+    password : '123',
+    accion: 'login'
   };
 
-  $scope.recuperaPasswordData =
+  $scope.recuperarPasswordData =
   {
     email: '',
     accion: 'recuperaPassword'
   };
 
   // Login
-  $scope.login = function() {
-
-    $scope.loginData.accion = 'login';          
+  $scope.login = function() {        
 
     $auth.login($scope.loginData, { timeout: 10000 })
     .then(
@@ -53,8 +54,15 @@ angular.module('miSitio')
           var payload = $auth.getPayload();
           // Guarda el password en el usuarioFactory
           usuarioFactory.password = $scope.loginData.password;
-          $scope.loginData = {};
           usuarioFactory.payload = payload;
+
+          // Limpia el formulario
+          $scope.loginData = {};
+          $scope.frmLogin.$setPristine();
+          $scope.frmLogin.$setUntouched();
+
+          // Mensaje de bienvenida
+          growl.info("Bienvenido " + usuarioFactory.payload.nombre + "!", {ttl: 5000});
 
           if (usuarioFactory.payload.rol == "admin") {
             $state.go('admin.adminGrillaUsuarios');
@@ -69,66 +77,88 @@ angular.module('miSitio')
           }
         }
         else {
+          // Limpia el formulario
           $scope.loginData = {};
-          alert('usuario o contraseña incorrecto.');
+          $scope.frmLogin.$setPristine();
+          $scope.frmLogin.$setUntouched();
+          growl.error("Credenciales incorrectas.", {ttl: 5000});
         }
       },
       function(error) {
-        alert('ERROR: Problema de conexion con el servidor.');
+        growl.error("Problema de conexión con el servidor", {ttl: 5000});
       })
 
       .catch(function(error){
-          // Si ha habido errores llegamos a esta parte
-          alert('ERROR: Problema de conexion con el servidor.'); 
+          // Limpia el formulario
           $scope.loginData = {};
+          $scope.frmLogin.$setPristine();
+          $scope.frmLogin.$setUntouched();
+          growl.error("Problema de conexión con el servidor", {ttl: 5000});
       }
     ); 
   };
 
   // Recupera Password
-  $scope.recuperaPassword = function() {
+  $scope.recuperarPassword = function() {
     
-    usuarioService.recuperaPassword($scope.recuperaPasswordData)
+    usuarioService.recuperaPassword($scope.recuperarPasswordData)
     .then( 
       function(respuesta) {          
         if (respuesta.estado == true) {
-          alert(respuesta.mensaje);
+          // Limpia el formulario
+          $scope.recuperarPasswordData = {};
+          $scope.frmRecuperarPassword.$setPristine();
+          $scope.frmRecuperarPassword.$setUntouched();
+          growl.success(respuesta.mensaje, {ttl: 3000});
         }
         else {
-          alert(respuesta.mensaje); 
+          // Limpia el formulario
+          $scope.recuperarPasswordData = {};
+          $scope.frmRecuperarPassword.$setPristine();
+          $scope.frmRecuperarPassword.$setUntouched();
+          growl.error(respuesta.mensaje, {ttl: 3000});
         }
       }
     );              
   };
 })
 
-// .controller('RegistroCtrl', function($state, $scope, usuarioService, usuarioFactory) {
-  
-//   $scope.altaUsuarioData =
-//   {
-//     nombre: 'Prueba',
-//     email: 'prueba@sitio.com',
-//     password1: '123',
-//     password2: '123',
-//     rol: '2',
-//     accion: 'altaUsuario'
-//   };
+.controller('AltaUsuarioCtrl', function($state, $scope, growl, usuarioService, usuarioFactory, URLServidor, URLServices) {
 
-//   $scope.altaUsuario = function() {
-//     usuarioService.altaUsuario($scope.altaUsuarioData)
-//     .then( 
-//       function(respuesta) {          
-//         if (respuesta.estado == true) {
-//           alert("Te acabas de registrar en el sistema! Ya puedes acceder con tus credenciales.")
-//           $state.go('login');
-//         }
-//         else {
-//           alert(respuesta.mensaje); 
-//         }
-//       }
-//     );
-//   };
-// })
+  $scope.rol = usuarioFactory.payload.rol;
+  
+  $scope.altaUsuarioData =
+  {
+    nombre: 'Prueba',
+    email: 'prueba@sitio.com',
+    password1: '123',
+    password2: '123',
+    rol: '2',
+    accion: 'altaUsuario'
+  };
+
+  $scope.altaUsuario = function() {
+    usuarioService.altaUsuario($scope.altaUsuarioData)
+    .then( 
+      function(respuesta) {          
+        if (respuesta.estado == true) {
+
+          if ($scope.rol == null) {
+            growl.success("Se acaba de registrar en el sistema! Ya puede acceder con sus credenciales.", {ttl: 5000});
+            $state.go('login');
+          }
+          if ($scope.rol == 'admin') {
+            growl.success("Alta de usuario ok!", {ttl: 3000});
+            $state.go('admin.adminGrillaUsuarios');
+          }          
+        }
+        else {
+          growl.error(respuesta.mensaje, {ttl: 3000});
+        }
+      }
+    );
+  };
+})
 
 .controller('DirectivasCtrl', function($state, $scope, usuarioService, usuarioFactory, URLServidor, URLimgUsuarioPerfil) {
   
@@ -136,21 +166,37 @@ angular.module('miSitio')
 
     $scope.borrarUsuarioData = { idUsuario : usuario.id, accion : 'borrarUsuario' };
 
-    alert("usuario directiva! " +   $scope.borrarUsuarioData.idUsuario);
-
     usuarioService.borrarUsuario($scope.borrarUsuarioData)
     .then( 
       function(respuesta) { 
-
         if (respuesta.estado == true) {
-          alert(respuesta.mensaje);
+          growl.success(respuesta.mensaje, {ttl: 3000});
           $scope.directivaGrillaUsuariosDatos.lista.datos.splice(index, 1);
         }
         else {
-          alert(respuesta.mensaje); 
+          growl.error(respuesta.mensaje, {ttl: 3000}); 
         }
       }
     );
+  };
+
+  $scope.editarUsuario = function(usuario) {
+
+    // $scope.borrarUsuarioData = { idUsuario : usuario.id, accion : 'editarUsuario' };
+
+    // usuarioService.borrarUsuario($scope.borrarUsuarioData)
+    // .then( 
+    //   function(respuesta) { 
+    //     if (respuesta.estado == true) {
+    //       alert(respuesta.mensaje);
+    //       $scope.directivaGrillaUsuariosDatos.lista.datos.splice(index, 1);
+    //     }
+    //     else {
+    //       alert(respuesta.mensaje); 
+    //     }
+    //   }
+    // );
+    alert("usuario a editar: "+usuario.id);
   };
 
 })
@@ -174,7 +220,7 @@ angular.module('miSitio')
           $scope.directivaGrillaUsuariosDatos.lista = {datos: respuesta.datos};
         }
         else {
-          alert(respuesta.mensaje); 
+          growl.error(respuesta.mensaje, {ttl: 3000}); 
         }
       }
     );
@@ -184,40 +230,7 @@ angular.module('miSitio')
 
 })
 
-.controller('AdminAltaUsuarioCtrl', function($state, $scope, FileUploader, usuarioService, usuarioFactory, URLServidor, URLServices) {
 
-  $scope.rol = usuarioFactory.payload.rol;
-  
-  $scope.altaUsuarioData =
-  {
-    nombre: 'Prueba',
-    email: 'prueba@sitio.com',
-    password1: '123',
-    password2: '123',
-    rol: '2',
-    accion: 'altaUsuario'
-  };
-
-  $scope.altaUsuario = function() {
-    usuarioService.altaUsuario($scope.altaUsuarioData)
-    .then( 
-      function(respuesta) {          
-        if (respuesta.estado == true) {
-          alert("Carga ok!")
-          $state.go('admin.adminGrillaUsuarios');
-        }
-        else {
-          alert(respuesta.mensaje); 
-        }
-      }
-    );
-    //console.log($scope.altaUsuarioData.foto[0].base64);
-  };
-  
-  
-  
-
-})
 
 
 
