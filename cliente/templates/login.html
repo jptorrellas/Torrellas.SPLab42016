@@ -2,7 +2,7 @@
 <link rel="stylesheet" href="assets/css/pages/page_log_reg_v2.css">  
 
 <!--=== Content Part ===-->    
-<div class="container" style="background-image:url('assets/img/bg/19.jpg'); width:100%; height:100%;">
+<div class="container" style="background-image:url('assets/img/bg/11.jpg'); width:100%; height:100%;">
     <!--Reg Block-->
     <div class="reg-block">
         <div class="reg-block-header">
@@ -43,10 +43,16 @@
             <div class="row">
                 <div class="col-md-10 col-md-offset-1">
                     <button type="submit" class="btn-u btn-block" ng-click="login()" ng-disabled="frmLogin.$invalid">Log In</button>
-                    <!-- <input type="submit" ng-click="update()" value="Guardar" ng-disabled="userForm.$invalid" /> -->
                 </div>
             </div>
         </form>
+
+        
+        <div class="row" style="text-align:center;">
+            <div class="col-md-10 col-md-offset-1">
+                <a href="" data-toggle="modal" data-target="#responsive"><h4>Olvidaste tu password?</h4></a>
+            </div>
+        </div>
         
         <hr>
         <p style="text-align:center;">
@@ -61,6 +67,36 @@
     <!--End Reg Block-->
 </div><!--/container-->
 <!--=== End Content Part ===-->
+
+
+<div class="modal fade" id="responsive" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+    <form name="frmRecuperarPassword" novalidate>
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title" id="myModalLabel4">Recuperar Password</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h5>Ingresa el Email con el que te registraste y te enviaremos tu password a esa cuenta.</h5>
+                            <p><input name="emailAenviar" class="form-control" type="email" placeholder="Ingresa tu email" ng-model="recuperaPasswordData.email" required></p>
+                            <div class="messages" ng-show="frmRecuperarPassword.$submitted || frmRecuperarPassword.email.$touched">
+                                <span ng-show="frmRecuperarPassword.emailAenviar.$error.required">El campo es obligatorio.</span>
+                                <span ng-show="frmRecuperarPassword.emailAenviar.$error.email">Formato de email incorrecto.</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-u btn-u-default" data-dismiss="modal">Cerrar</button>
+                    <button type="submit" class="btn-u btn-u-primary" ng-click="recuperaPassword()" ng-disabled="frmRecuperarPassword.$invalid" data-dismiss="modal">Enviar</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
 
 
 

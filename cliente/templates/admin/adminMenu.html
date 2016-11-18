@@ -1,19 +1,35 @@
 <div class="header" style="background-image:url('assets/img/bg/bg-1.png');">
-    <div class="container" style="margin-left:25px; margin-right:25px;">
+    <div class="container" style="width:90%">
         <!-- Logo -->
         <div class="logo">
             <div class="row">
-                <div class="col col-md-1">
-                     <img src="assets/img/logo/logo-fra.png" alt="Logo" height="60">
-                </div>
-                <div class="col col-md-3" style="margin-top:20px;">
-                    <h4><b>Torrellas Juan Pablo</b></h4>
-                    <hh5>Laboratorio IV - 2016</hh5>
-                    <h5></h5>
+                <div class="col col-md-3" style="line-height:5px;">
+                    <img src="assets/img/logo/logo-fra.png" alt="Logo" style="height:25%;">
+                    <p style="font-size:8px;"><b>Torrellas Juan Pablo</b></p>
+                    <p style="font-size:9px;">Laboratorio IV - 2016</p>
                 </div>
             </div>   
         </div>
         <!-- End Logo -->
+
+
+        <!-- Topbar -->   
+        <div class="topbar">
+            <ul class="loginbar pull-right"  style="margin:15px 15px 0px 0px;">
+                <li class="hoverSelector">
+
+                    <img class="rounded-x inline-block" style="border:2px solid #555; margin-right:5px;" ng-src="{{usuario.foto}}" height="35">
+                    <div class="inline-block"><h5><b>{{usuario.nombre}}</b></h5></div>
+
+                    <ul class="languages hoverSelectorBlock" style="margin-top:5px;">
+                        <li class="page-scroll">
+                            <a ng-href="#"><i class="fa fa-cog"></i>&nbsp Perfil</a>
+                        </li class="page-scroll">
+                        <li><a ng-click="logout()"><i class="fa fa-sign-out"></i>&nbsp Logout</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
 
         <!-- Toggle get grouped for better mobile display -->
         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
@@ -25,40 +41,41 @@
 
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse mega-menu navbar-responsive-collapse">
-        <div class="container" style="margin-right:25px;">
+        <div class="container" style="width: 90%">         
 
-            <ul class="nav navbar-nav" style="float:right;">
-                <li class="page-scroll">
-                    <div class=" ">
-                        <img class="rounded-x inline-block" style="border:2px solid #555;" ng-src="{{usuario.foto}}" height="35">
-                        <div class="inline-block"><h6><b>{{usuario.nombre}}</b></h6></div>                       
-                    </div>
-                </li>
-            </ul>
-
-            <ul class="nav navbar-nav" style="float:right;">
-                <li class="page-scroll">
-                    <a href="#clientes">Alta</a>
-                </li>
-
-                <li class="page-scroll">
-                    <a href="#clientes">Baja</a>
-                </li>
-
-                <!-- Demo Pages -->
-               <!--  <li class="dropdown">
+            <ul class="nav navbar-nav">               
+                <li class="dropdown">
                     <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">
-                        Demos
+                        USUARIOS
                     </a>
                     <ul class="dropdown-menu pull-right">
-                        <li><a href="Themantic-Designs/Architecture/index.html">Architecture</a></li>
-                        <li><a href="Themantic-Designs/Travel/index.html">Travel</a></li>
+                        <li class="page-scroll">
+                            <a ng-href="#/admin/altaUsuario">ALTA USUARIO</a>
+                        </li>
+
+                        <li class="page-scroll">
+                            <a ng-href="#/admin/grillaUsuarios">GRILLA USUARIOS</a>
+                        </li>
                     </ul>
-                </li> -->
-                <!-- End Demo Pages -->
+                </li>
             </ul>
-            
-            
+
+            <ul class="nav navbar-nav">
+                <li class="dropdown">
+                    <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">
+                        PRODUCTOS
+                    </a>
+                    <ul class="dropdown-menu pull-left">
+                        <li class="page-scroll">
+                            <a ng-href="#/admin/altaUsuario">ALTA PRODUCTO</a>
+                        </li>
+
+                        <li class="page-scroll">
+                            <a ng-href="#/admin/altaProducto">GRILLA PRODUCTOS</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>           
 
         </div><!--/end container-->
     </div><!--/navbar-collapse-->

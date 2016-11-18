@@ -51,40 +51,82 @@ switch ($objRecibido->accion) {
 			// $crud->insert("registro_logins", "id_usuario, dispositivo_usuario", "'$usuario->id', '$objRecibido->dispositivo'");
 			// Trae la descripción del rol
 			$rolDescripción = $crud->select("roles", "descripcion", "id = '$usuario->id_rol'");
-			//if ($rolDescripción->descripcion == "Técnico") {
-				// $cliente = $crud->select("clientes", "*", "id_usuario = '$usuario->id'");
-				// if ($cliente != false && $cliente != null) {
-					// TOKEN
-					$key = 'miToken';
-					$token = array(
-						"id" => $usuario->id,
-						"nombre" => $usuario->nombre,
-						"email" => $usuario->email,
-						"rol" => $rolDescripción->descripcion,
-						"foto" => $usuario->foto,
-						"exp" => time() + 900
-						// "iat" => 1356999524,
-						// "nbf" => 1357000000
-					);
-					$jwt = Firebase\JWT\JWT::encode($token, $key, 'HS256');
 
-					$array['miToken'] = $jwt;
-					echo json_encode($array);
-				// }
-				// else {
-				// 	echo "401";
-				// }
-			//}
+			// TOKEN
+			$key = 'miToken';
+			$token = array(
+				"id" => $usuario->id,
+				"nombre" => $usuario->nombre,
+				"email" => $usuario->email,
+				"rol" => $rolDescripción->descripcion,
+				"foto" => $usuario->foto,
+				"exp" => time() + 900
+				// "iat" => 1356999524,
+				// "nbf" => 1357000000
+			);
+			$jwt = Firebase\JWT\JWT::encode($token, $key, 'HS256');
+
+			$array['miToken'] = $jwt;
+			echo json_encode($array);
+				
 		}
 		else {
 			echo "401";
 		}
 		break;
 
-	case 'registro':
+	case 'recuperaPassword':
+		
+		$usuario = $crud->select("usuarios", "*", "email = '$objRecibido->email' && estado = 1");
+
+		if ($usuario != null && $usuario != false) {					
+			// ENVIO MAIL
+			
+			// Varios destinatarios
+			$para  = $usuario->email; //. ', '; // atención a la coma
+			// $para .= 'wez@example.com';
+			
+			// título
+			$titulo = 'SISTEMA DE TORRELLAS: RECUPERACION PASSWORD';
+
+			// mensaje
+			$mensaje = '
+
+			*****************
+			*   TORRELLAS   *
+			*****************
+			
+			SERVICIO DE RECUPERACION DE PASSWORD  
+
+			**
+			*   Datos de usuario:
+			*
+			*	E-mail:    '.$usuario->email.'
+			*	Password:  '.$usuario->password.'
+			**
+			      
+			Gracias por utilizar el sistema.
+			Ante cualquier problema, duda o sugerencia no dudes en consultarnos.
+			e-mail: jp.torrellas@gmx.com
+			
+			';
+
+			mail($para, $titulo, $mensaje);
+
+			$respuesta['mensaje'] = 'ok';
+			echo json_encode($respuesta);
+		}
+		else {
+			$respuesta['mensaje'] = 'error';
+			echo json_encode($respuesta);
+		}
+		break;
+
+	case 'altaUsuario':
 		
 		ini_set('date.timezone','America/Buenos_Aires'); 
-		$fechaActual = date("Y-m-d H:i:s");
+		$fechaActual = date("Y-m-d_H-i-s");
+	
 
 		$usuario = $crud->select("usuarios", "*", "email = '$objRecibido->email'");
 		// Si existe un usuario con ese mail devuelve un error
@@ -95,12 +137,33 @@ switch ($objRecibido->accion) {
 		else {
 			if($crud->insert("usuarios", "nombre, email, password, id_rol, fecha_alta", "'$objRecibido->nombre', '$objRecibido->email', '$objRecibido->password1', '$objRecibido->rol', '$fechaActual'")) {
 
+				$usuarioCreado = $crud->select("usuarios", "id", "email = '$objRecibido->email'");
+
+				if (isset($objRecibido->foto) && $objRecibido->foto != null && $objRecibido->foto != '') {
+					
+					// Obtiene extension del archivo a subir
+					$extension = explode("/", $objRecibido->foto[0]->filetype);
+					$extension = $extension[1];
+
+					$Base64Img = base64_decode($objRecibido->foto[0]->base64);
+					
+					$nombreFoto = $usuarioCreado->id.'-'.$fechaActual.'.'.$extension;
+					$archivoImagen = '../img/usuarios/'.$nombreFoto;
+					
+					file_put_contents($archivoImagen, $Base64Img);
+
+					// inserta nombre de foto subida
+					$crud->update("usuarios", "foto = '$nombreFoto'", "id = '$usuarioCreado->id'");
+				}
+
 				$respuesta['mensaje'] = 'ok';
 				echo json_encode($respuesta);
 			}
 			else {
+				
 				$respuesta['mensaje'] = 'error';
 				echo json_encode($respuesta);
+				
 			}
 		}
 		break;

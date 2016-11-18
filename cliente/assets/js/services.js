@@ -14,13 +14,14 @@ angular.module('miSitio')
 	
 	var respuesta = {};	
 
-	this.registro = function(data) {
+	this.altaUsuario = function(data) { 
 
 		var urlCompleta = URLServidor + URLServices + "usuarioService.php";
 
     	return $http.post(urlCompleta, data,  { timeout: 10000 })
     	.then(
-  			function(retorno){ // Función a ejecutarse en caso de éxito      
+  			function(retorno){ 
+			   
     			if (retorno.data.mensaje == "ok") {
     				respuesta.estado = true;
 	    			respuesta.mensaje = 'Usuario Registrado. Ya puede acceder al sistema :)';
@@ -39,6 +40,32 @@ angular.module('miSitio')
     			}	
   			},
   			function(error){ // Función a ejecutarse en caso de fallo
+    			respuesta.estado = false;
+    			respuesta.mensaje = "ERROR: Problema de conexion con el servidor.";
+    			return respuesta;
+  			}
+    	);
+	};
+
+	this.recuperaPassword = function(data){
+
+		var urlCompleta = URLServidor + URLServices + "usuarioService.php";
+
+    	return $http.post(urlCompleta, data,  { timeout: 10000 })
+    	.then(
+  			function(retorno){ // Función a ejecutarse en caso de éxito        
+    			if (retorno.data.mensaje != "error") {
+    				respuesta.estado = true;
+	    			respuesta.mensaje = 'Acabamos de enviarte el password. Revisa tu casilla de e-mail :)';
+	    			return respuesta;
+    			}
+    			else{
+    				respuesta.estado = false;
+    				respuesta.mensaje = "ERROR: Usuario no encontrado.";
+    				return respuesta;
+    			}	
+  			},
+  			function(retorno){ // Función a ejecutarse en caso de fallo
     			respuesta.estado = false;
     			respuesta.mensaje = "ERROR: Problema de conexion con el servidor.";
     			return respuesta;
@@ -82,31 +109,7 @@ angular.module('miSitio')
     	);
 	};
 
-	// this.recuperaPassword = function(data){
-
-	// 	var urlCompleta = URLServidor + URLServices + "usuarioService.php";
-
- //    	return $http.post(urlCompleta, data,  { timeout: 10000 })
- //    	.then(
- //  			function(retorno){ // Función a ejecutarse en caso de éxito        
- //    			if (retorno.data.mensaje != "error") {
- //    				respuesta.estado = true;
-	//     			respuesta.mensaje = 'Acabamos de enviarle el password. Revise su e-mail :)';
-	//     			return respuesta;
- //    			}
- //    			else{
- //    				respuesta.estado = false;
- //    				respuesta.mensaje = "ERROR: Usuario no encontrado.";
- //    				return respuesta;
- //    			}	
- //  			},
- //  			function(retorno){ // Función a ejecutarse en caso de fallo
- //    			respuesta.estado = false;
- //    			respuesta.mensaje = "ERROR: Problema de conexion con el servidor.";
- //    			return respuesta;
- //  			}
- //    	);
-	// };
+	
 
 	// this.modificaInformacion = function(data){
 

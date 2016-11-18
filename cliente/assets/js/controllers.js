@@ -32,6 +32,12 @@ angular.module('miSitio')
     password : ''
   };
 
+  $scope.recuperaPasswordData =
+  {
+    email: '',
+    accion: 'recuperaPassword'
+  };
+
   // Login
   $scope.login = function() {
 
@@ -50,7 +56,7 @@ angular.module('miSitio')
           usuarioFactory.payload = payload;
 
           if (usuarioFactory.payload.rol == "admin") {
-            $state.go('admin.adminInicio');
+            $state.go('admin.adminGrillaUsuarios');
           }
           if (usuarioFactory.payload.rol == "comprador") {
             alert("login ok: comprador");
@@ -63,43 +69,60 @@ angular.module('miSitio')
         }
         else {
           $scope.loginData = {};
-          alert('usuario o contraseña incorrecto.', 'middle', false, 2500);
+          alert('usuario o contraseña incorrecto.');
         }
       },
       function(error) {
-        alert('ERROR: Problema de conexion con el servidor.', 'middle', false, 2500);
+        alert('ERROR: Problema de conexion con el servidor.');
       })
 
       .catch(function(error){
           // Si ha habido errores llegamos a esta parte
-          alert('ERROR: Problema de conexion con el servidor.', 'middle', false, 2500); 
+          alert('ERROR: Problema de conexion con el servidor.'); 
           $scope.loginData = {};
       }
     ); 
   };
+
+  // Recupera Password
+  $scope.recuperaPassword = function() {
+    
+    usuarioService.recuperaPassword($scope.recuperaPasswordData)
+    .then( 
+      function(respuesta) {          
+        if (respuesta.estado == true) {
+          alert(respuesta.mensaje);
+        }
+        else {
+          alert(respuesta.mensaje); 
+        }
+      }
+    );              
+  };
 })
 
 .controller('RegistroCtrl', function($state, $scope, usuarioService, usuarioFactory) {
-  $scope.registroData =
+  
+  $scope.altaUsuarioData =
   {
     nombre: 'Prueba',
     email: 'prueba@sitio.com',
     password1: '123',
     password2: '123',
     rol: '2',
-    accion: 'registro'
+    accion: 'altaUsuario'
   };
 
-  $scope.registro = function() {
-    usuarioService.registro($scope.registroData) // Checkea que no exista el usuario, si no existe lo registra
+  $scope.altaUsuario = function() {
+    usuarioService.altaUsuario($scope.altaUsuarioData)
     .then( 
       function(respuesta) {          
         if (respuesta.estado == true) {
-          alert(respuesta.mensaje, 'middle', false, 2500);
+          alert("Te acabas de registrar en el sistema! Ya puedes acceder con tus credenciales.")
           $state.go('login');
         }
         else {
-          alert(respuesta.mensaje, 'middle', false, 2500); 
+          alert(respuesta.mensaje); 
         }
       }
     );
@@ -108,7 +131,7 @@ angular.module('miSitio')
 
 
 //ADMIN
-.controller('AdminInicioCtrl', function($state, $scope, usuarioService, usuarioFactory, URLServidor, i18nService, uiGridConstants) {
+.controller('AdminGrillaUsuariosCtrl', function($state, $scope, usuarioService, usuarioFactory, URLServidor) {
 
   $scope.rol = usuarioFactory.payload.rol;
   $scope.directivaGrillaUsuariosDatos = {};
@@ -129,104 +152,49 @@ angular.module('miSitio')
           $scope.directivaGrillaUsuariosDatos.lista = {datos: respuesta.datos};
         }
         else {
-          alert(respuesta.mensaje, 'middle', false, 2500); 
+          alert(respuesta.mensaje); 
         }
       }
     );
   };
   $scope.traerTodosLosUsuarios();
 
+})
 
+.controller('AdminAltaUsuarioCtrl', function($state, $scope, FileUploader, usuarioService, usuarioFactory, URLServidor, URLServices) {
 
-  // // Objeto de configuracion de la grilla.
-  // $scope.gridOptions = {
-  //   // Configuracion para exportar datos.
-  //   exporterCsvFilename: 'misdatos.csv',
-  //   exporterCsvColumnSeparator: ';',
-  //   exporterPdfDefaultStyle: {fontSize: 9},
-  //   exporterPdfTableStyle: {margin: [30, 30, 30, 30]},
-  //   exporterPdfTableHeaderStyle: {fontSize: 10, bold: true, italics: true, color: 'red'},
-  //   exporterPdfHeader: { text: "My Header", style: 'headerStyle' },
-  //   exporterPdfFooter: function ( currentPage, pageCount ) {
-  //     return { text: currentPage.toString() + ' of ' + pageCount.toString(), style: 'footerStyle' };
-  //   },
-  //   exporterPdfCustomFormatter: function ( docDefinition ) {
-  //     docDefinition.styles.headerStyle = { fontSize: 22, bold: true };
-  //     docDefinition.styles.footerStyle = { fontSize: 10, bold: true };
-  //     return docDefinition;
-  //   },
-  //   exporterPdfOrientation: 'portrait',
-  //   exporterPdfPageSize: 'LETTER',
-  //   exporterPdfMaxGridWidth: 500,
-  //   exporterCsvLinkElement: angular.element(document.querySelectorAll(".custom-csv-link-location")),
-  //   onRegisterApi: function(gridApi){
-  //     $scope.gridApi = gridApi;
-  //   }
-  // };
+  $scope.rol = usuarioFactory.payload.rol;
   
-  // $scope.gridOptions.enableGridMenu = true;
-  // $scope.gridOptions.selectAll = true;
-  // $scope.gridOptions.paginationPageSizes = [25, 50, 75];
+  $scope.altaUsuarioData =
+  {
+    nombre: 'Prueba',
+    email: 'prueba@sitio.com',
+    password1: '123',
+    password2: '123',
+    rol: '2',
+    accion: 'altaUsuario'
+  };
+
+  $scope.altaUsuario = function() {
+    usuarioService.altaUsuario($scope.altaUsuarioData)
+    .then( 
+      function(respuesta) {          
+        if (respuesta.estado == true) {
+          alert("Carga ok!")
+          $state.go('admin.adminGrillaUsuarios');
+        }
+        else {
+          alert(respuesta.mensaje); 
+        }
+      }
+    );
+    //console.log($scope.altaUsuarioData.foto[0].base64);
+  };
   
-  // // Configuracion de la paginacion
-  // $scope.gridOptions.paginationPageSize = 5;
-  // $scope.gridOptions.columnDefs = columnDefs();
   
-  // // Activo la busqueda en todos los campos.
-  // $scope.gridOptions.enableFiltering = true;
   
-  // // Configuracion del idioma.
-  // i18nService.setCurrentLang('es');
 
-
-  // // Cargo los datos en la grilla.
-  // // $scope.gridOptions.data = [{id:1,nombre:'juancito',email:'j@j.com',rol:'admin'},{id:2,nombre:'pepito',email:'p@p.com',rol:'cliente'},{id:2,nombre:'toto',email:'t@t.com',rol:'cendedor'}];
-  // usuarioService.traerTodosLosUsuarios($scope.traerTodosLosUsuariosData)
-  // .then( 
-  //   function(respuesta) { 
-
-  //     if (respuesta.estado == true) {
-  //       $scope.gridOptions.data = respuesta.datos;
-  //     }
-  //     else {
-  //       alert(respuesta.mensaje, 'middle', false, 2500); 
-  //     }
-  //   }
-  // );
-
-  // function columnDefs () {
-  //   return [
-  //     { 
-  //       field: 'id', 
-  //       name: '#', 
-  //       width: 45
-  //     },
-      
-  //     { 
-  //       field: 'nombre', 
-  //       name: 'Nombre',
-  //       enableFiltering: true
-  //     },
-      
-  //     { 
-  //       field: 'email', 
-  //       name: 'email',
-  //       enableFiltering: true
-  //     },
-      
-  //     { 
-  //       field: 'email', 
-  //       name: 'mail'
-  //     },
-      
-  //     { field: 'rol', 
-  //       name: 'rol',
-  //       enableFiltering: true
-  //     }
-  //   ];
-  // }
-
-});
+})
 
 
 

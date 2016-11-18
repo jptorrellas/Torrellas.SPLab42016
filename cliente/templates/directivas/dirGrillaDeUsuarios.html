@@ -1,15 +1,15 @@
-<div class="panel panel-green margin-bottom-40">
+<div class="panel panel-u margin-bottom-40" style="overflow:auto;">
     <div class="panel-heading">
         <h3 class="panel-title"><i class="fa fa-tasks"></i> Lista de usuarios</h3>
     </div>
     <table class="table">
         <thead>
             <tr>
-                <th>#</th>
-                <th>foto</th>
-                <th>nombre</th>
-                <th>email</th>
-                <th>rol</th>
+                <th style="text-align:center !important;">#</th>
+                <th style="text-align:center !important;">FOTO</th>
+                <th>NOMBRE</th>
+                <th>EMAIL</th>
+                <th>ROL</th>
                 <th ng-if="rol == 'admin'">Editar</th>
                 <th ng-if="rol == 'admin'">Borrar</th>
             </tr>
@@ -17,8 +17,8 @@
         <tbody ng-repeat="usuario in directivaGrillaUsuariosDatos.lista.datos">
         				
 			<tr>
-				<td>{{usuario.id}}</td>
-			    <td><img style="width:50px; border-radius:50%;" ng-src="{{usuario.foto}}"></td>
+				<td style="text-align:center !important;">{{usuario.id}}</td>
+			    <td style="text-align:center !important;"><img style="width:50px; border-radius:50%;" ng-src="{{usuario.foto}}"></td>
 			    <td>{{usuario.nombre}}</td>
 			    <td>{{usuario.email}}</td>
 			    <td>{{usuario.rol}}</td>

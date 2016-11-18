@@ -1,0 +1,79 @@
+<!-- CSS Page Style -->    
+<link rel="stylesheet" href="assets/css/pages/page_log_reg_v2.css"> 
+
+
+<!--=== Content Part ===-->    
+<div class="container" style="background-image:url('assets/img/bg/19.jpg'); width:100%; height:100%;">
+    <!--Reg Block-->
+    <div class="reg-block">
+
+        <div class="reg-block-header">
+            <h2>Alta de Usuario</h2>
+        </div>
+
+        <form name="frmAltaUsuario" class="sky-form" style="box-shadow: none; border:none;" novalidate>
+
+            <div class="input-group margin-bottom-20">
+                <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
+                <input name="email" type="email" class="form-control" placeholder="Email" ng-model="altaUsuarioData.email" required/>
+            </div>
+            <div class="messages" ng-show="frmAltaUsuario.$submitted || frmAltaUsuario.email.$touched">
+                <span ng-show="frmAltaUsuario.email.$error.required">El campo es obligatorio.</span>
+                <span ng-show="frmAltaUsuario.email.$error.email">Formato de email incorrecto.</span>
+            </div>
+
+            
+            <div class="input-group margin-bottom-20">
+                <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                <input name="nombre" type="text" class="form-control" placeholder="Nombre" ng-model="altaUsuarioData.nombre" required>
+            </div>
+            <div class="messages" ng-show="frmAltaUsuario.$submitted || frmAltaUsuario.nombre.$touched">
+                <span ng-show="frmAltaUsuario.nombre.$error.required">El campo es obligatorio.</span>
+            </div>
+            
+            <div class="input-group margin-bottom-20">
+                <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+                <input name="password1" type="password" class="form-control" placeholder="Ingrese Password" ng-model="altaUsuarioData.password1" required>
+            </div>
+            <div class="messages" ng-show="frmAltaUsuario.$submitted || frmAltaUsuario.password1.$touched">
+                <span ng-show="frmAltaUsuario.password1.$error.required">El campo es obligatorio.</span>
+            </div>
+
+            <div class="input-group margin-bottom-20">
+                <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+                <input name="password2" type="password" class="form-control" placeholder="Reingrese Password" ng-model="altaUsuarioData.password2" required>
+            </div>
+            <div class="messages" ng-show="frmAltaUsuario.$submitted || frmAltaUsuario.password2.$touched">
+                <span ng-show="frmAltaUsuario.password2.$error.required">El campo es obligatorio.</span>
+                <span ng-show="altaUsuarioData.password1 != altaUsuarioData.password2">Los passwords no coinciden.</span>
+            </div>
+    
+            <label class="select" ng-if="rol == 'admin'">
+                <select ng-model="altaUsuarioData.rol">
+                    <option value="1">Administrador</option>
+                    <option value="2">Comprador</option>
+                    <option value="3">Vendedor</option>
+                </select>
+                <i></i>
+            </label>
+
+            <label for="file" class="input input-file">
+                <div class="button"><input type="file" name="file" multiple="" onchange="this.parentNode.nextSibling.value = this.value" ng-model="altaUsuarioData.foto" base-sixty-four-input>Buscar</div><input type="text" placeholder="Cargar una imagen" readonly="">
+            </label>
+            
+            <hr>
+
+            <div class="row">
+                <div class="col-md-10 col-md-offset-1">
+                    <button type="submit" class="btn-u btn-block" ng-click="altaUsuario()" ng-disabled="frmAltaUsuario.$invalid || altaUsuarioData.password1 != altaUsuarioData.password2">Dar de alta</button>
+                    <!-- <input type="submit" ng-click="update()" value="Guardar" ng-disabled="userForm.$invalid" /> -->
+                </div>
+            </div>
+        </form>
+        
+        <hr>
+
+    </div>
+    <!--End Reg Block-->
+</div><!--/container-->
+<!--=== End Content Part ===-->

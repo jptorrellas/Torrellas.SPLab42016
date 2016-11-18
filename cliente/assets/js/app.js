@@ -1,5 +1,5 @@
 
-var app = angular.module('miSitio', ['ui.router', 'angularFileUpload', 'satellizer', 'ui.grid', 'ui.grid.pagination', 'ui.grid.resizeColumns', 'ui.grid.selection', 'ui.grid.exporter', 'ui.grid.edit', 'ui.router']);
+var app = angular.module('miSitio', ['ui.router', 'angularFileUpload', 'satellizer', 'naif.base64']);
 
 
 app.run(function($http) {
@@ -38,26 +38,37 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider)
 		.state("registro", {
 			cache: false,
 			url:"/registro",
-			templateUrl:"templates/registro.html",
+			templateUrl:"templates/altaUsuario.html",
 			controller:"RegistroCtrl"
 		})
 		
 		// ADMIN
 		.state('admin', {
-			cache: false,
-			url: '/Admin',
+			cache: true,
+			url: '/admin',
 			abstract: true,
 			templateUrl: 'templates/admin/adminMenu.html',
 			controller: 'AppCtrl'
 		})
 
-		.state('admin.adminInicio', {
+		.state('admin.adminGrillaUsuarios', {
 			cache: false,
-			url: '/inicio',
+			url: '/grillaUsuarios',
 			views: {
 			  'contenido': {
-			    templateUrl: 'templates/admin/adminInicio.html',
-			    controller: 'AdminInicioCtrl'
+			    templateUrl: 'templates/grillaUsuarios.html',
+			    controller: 'AdminGrillaUsuariosCtrl'
+			  }
+			}
+		})
+
+		.state('admin.adminAltaUsuario', {
+			cache: false,
+			url: '/altaUsuario',
+			views: {
+			  'contenido': {
+			    templateUrl: 'templates/altaUsuario.html',
+			    controller: 'AdminAltaUsuarioCtrl'
 			  }
 			}
 		})

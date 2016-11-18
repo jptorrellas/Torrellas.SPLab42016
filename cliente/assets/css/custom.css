@@ -30,3 +30,8 @@ form input.ng-invalid.ng-touched {
     height: 50px;
  }
 
+ .header .dropdown-custom > a:after, .header .dropdown-submenu > a:after {
+ display:none;
+ }
+
+
