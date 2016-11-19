@@ -1,15 +1,8 @@
 <div class="container" style="margin-top:50px; width:90%;">
-	<div ng-controller="AppCtrl">
-		<div ng-if="usuario.rol == 'admin'" ng-controller="AdminGrillaUsuariosCtrl">
-			<grilla-de-usuarios directivaGrillaUsuariosDatos="directivaGrillaUsuariosDatos" rol="{{rol}}" urlimg="{{urlimg}}"></grilla-de-usuarios>
-		</div>
-		<div ng-if="usuario.rol == 'comprador'" ng-controller="CompradorGrillaUsuariosCtrl">
-			<grilla-de-usuarios directivaGrillaUsuariosDatos="directivaGrillaUsuariosDatos" rol="{{rol}}" urlimg="{{urlimg}}"></grilla-de-usuarios>
-		</div>
-		<div ng-if="usuario.rol == 'vendedor'" ng-controller="VendedorGrillaUsuariosCtrl">
-			<grilla-de-usuarios directivaGrillaUsuariosDatos="directivaGrillaUsuariosDatos" rol="{{rol}}" urlimg="{{urlimg}}"></grilla-de-usuarios>
-		</div>
+
+	<div ng-controller="GrillaUsuariosCtrl">
+		<grilla-de-usuarios directivaGrillaUsuariosDatos="directivaGrillaUsuariosDatos" rol="{{rol}}" urlimg="{{urlimg}}"></grilla-de-usuarios>
 	</div>
-	
+		
 </div>
 

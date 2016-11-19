@@ -57,7 +57,7 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider)
 			views: {
 			  'contenido': {
 			    templateUrl: 'templates/grillaUsuarios.html',
-			    controller: 'AdminGrillaUsuariosCtrl'
+			    controller: 'GrillaUsuariosCtrl'
 			  }
 			}
 		})
@@ -76,14 +76,3 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider)
 			
 	$urlRouterProvider.otherwise("/login");
 });
-	
-// URL SERVIDOR
-app.constant('URLServidor', 'http://localhost/UTN/Github/Torrellas.SPLab42016/servidor/');
-// .constant('URLServidor', 'http://192.168.2.49/UTN/PPS/FPPSTorrellas/servidor/')
-// .constant('URLServidor', 'http://trexasolutions.com/galle/')
-
-// SUB-URL SERVICES
-app.constant('URLServices', 'services/');
-
-// SUB-URL SERVICES
-app.constant('URLimgUsuarioPerfil', 'img/usuarios/');

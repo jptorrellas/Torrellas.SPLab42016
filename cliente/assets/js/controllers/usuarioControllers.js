@@ -1,10 +1,10 @@
 angular.module('miSitio')
 
-.controller('AppCtrl', function($scope, $timeout, $state, $auth, growl, usuarioFactory, URLServidor, URLimgUsuarioPerfil) {
+.controller('AppCtrl', function($scope, $state, $auth, growl, usuarioFactory, urlFactory) {
 
-  // Para cargar la imagen del usuario en el menu-Perfil
+  // Para cargar la imagen del usuario en el navbar
   $scope.usuario = usuarioFactory.payload;
-  $scope.usuario.URLimgUsuarioPerfil = URLServidor + URLimgUsuarioPerfil + usuarioFactory.payload.foto;
+  $scope.usuario.URLimgUsuarioPerfil = urlFactory.imgPerfilUsuario + usuarioFactory.payload.foto;
 
   // Logout
   $scope.logout = function() { 
@@ -23,8 +23,7 @@ angular.module('miSitio')
   }
 })
 
-//TODOS
-.controller('LoginCtrl', function($state, $scope, $auth, growl, usuarioService, usuarioFactory) {
+.controller('LoginCtrl', function($scope, $state, $auth, growl, usuarioService, usuarioFactory) {
 
   var respuesta = {};
 
@@ -62,7 +61,7 @@ angular.module('miSitio')
           $scope.frmLogin.$setUntouched();
 
           // Mensaje de bienvenida
-          growl.info("Bienvenido " + usuarioFactory.payload.nombre + "!", {ttl: 5000});
+          growl.info("Bienvenido " + usuarioFactory.payload.nombre + "!", {ttl: 2000});
 
           if (usuarioFactory.payload.rol == "admin") {
             $state.go('admin.adminGrillaUsuarios');
@@ -123,7 +122,7 @@ angular.module('miSitio')
   };
 })
 
-.controller('AltaUsuarioCtrl', function($state, $scope, growl, usuarioService, usuarioFactory, URLServidor, URLServices) {
+.controller('AltaUsuarioCtrl', function($scope, $state, growl, usuarioService, usuarioFactory) {
 
   $scope.rol = usuarioFactory.payload.rol;
   
@@ -160,7 +159,30 @@ angular.module('miSitio')
   };
 })
 
-.controller('DirectivasCtrl', function($state, $scope, usuarioService, usuarioFactory, URLServidor, URLimgUsuarioPerfil) {
+.controller('GrillaUsuariosCtrl', function($scope, $state, growl, usuarioService, usuarioFactory, urlFactory) {
+
+  // Parámetros que se usan en la directiva
+  $scope.rol = usuarioFactory.payload.rol;
+  $scope.urlimg = urlFactory.imgPerfilUsuario;
+  $scope.directivaGrillaUsuariosDatos = {};
+
+  function traerTodosLosUsuarios() {
+    $scope.traerTodosLosUsuariosData = { accion: 'traerTodosLosUsuarios' };
+    
+    usuarioService.traerTodosLosUsuarios($scope.traerTodosLosUsuariosData)
+    .then( 
+      function(respuesta) { 
+        if (respuesta.estado == true) {
+          $scope.directivaGrillaUsuariosDatos.lista = {datos: respuesta.datos};
+        }
+        else {
+          growl.error(respuesta.mensaje, {ttl: 3000}); 
+        }
+      }
+    );
+  };
+  traerTodosLosUsuarios();
+  // Fin Parámetros que se usan en la directiva
   
   $scope.borrarUsuario = function(usuario, index) {
 
@@ -198,37 +220,11 @@ angular.module('miSitio')
     // );
     alert("usuario a editar: "+usuario.id);
   };
+});
 
-})
 
 
-//ADMIN
-.controller('AdminGrillaUsuariosCtrl', function($state, $scope, usuarioService, usuarioFactory, URLServidor, URLimgUsuarioPerfil) {
 
-  // Parámetros que se usan en la directiva
-  $scope.rol = usuarioFactory.payload.rol;
-  $scope.urlimg = URLServidor + URLimgUsuarioPerfil;
-  $scope.directivaGrillaUsuariosDatos = {};
-
-  $scope.traerTodosLosUsuariosData = { accion: 'traerTodosLosUsuarios' };
-
-  function traerTodosLosUsuarios() {
-    usuarioService.traerTodosLosUsuarios($scope.traerTodosLosUsuariosData)
-    .then( 
-      function(respuesta) { 
-        if (respuesta.estado == true) {
-          $scope.directivaGrillaUsuariosDatos.lista = {datos: respuesta.datos};
-        }
-        else {
-          growl.error(respuesta.mensaje, {ttl: 3000}); 
-        }
-      }
-    );
-  };
-  traerTodosLosUsuarios();
-  // Fin Parámetros que se usan en la directiva
-
-})
 
 
 

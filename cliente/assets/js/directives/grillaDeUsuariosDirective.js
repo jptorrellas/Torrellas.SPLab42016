@@ -11,7 +11,7 @@ angular.module('miSitio')
       replace: true,
       restrict: "E",
       templateUrl: "templates/directivas/dirGrillaDeUsuarios.html",
-      controller: "DirectivasCtrl"
+      controller: "GrillaUsuariosCtrl"
     };
 
   });

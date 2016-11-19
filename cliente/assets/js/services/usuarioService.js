@@ -1,24 +1,12 @@
 angular.module('miSitio')
-// Mi Factory para usuario
-.factory('usuarioFactory', function () {
-	// Objeto JSON respuesta utilizado para todas las respuestas al controller.
-	var respuesta = {};
-	
-	return {
- 		payload : {},
- 		password : {}
-	}
-})
 
-.service('usuarioService', function($http, URLServidor, URLServices) {
+.service('usuarioService', function($http, urlFactory) {
 	
 	var respuesta = {};	
 
 	this.altaUsuario = function(data) { 
 
-		var urlCompleta = URLServidor + URLServices + "usuarioService.php";
-
-    	return $http.post(urlCompleta, data,  { timeout: 10000 })
+    	return $http.post(urlFactory.wsUsuario, data,  { timeout: 10000 })
     	.then(
   			function(retorno){ 
 			   
@@ -39,7 +27,7 @@ angular.module('miSitio')
     				return respuesta;	
     			}	
   			},
-  			function(error){ // Función a ejecutarse en caso de fallo
+  			function(error){ 
     			respuesta.estado = false;
     			respuesta.mensaje = "Problema de conexión con el servidor.";
     			return respuesta;
@@ -49,11 +37,9 @@ angular.module('miSitio')
 
 	this.borrarUsuario = function(data) {
 
-		var urlCompleta = URLServidor + URLServices + "usuarioService.php";
-
-    	return $http.post(urlCompleta, data,  { timeout: 10000 })
+    	return $http.post(urlFactory.wsUsuario, data,  { timeout: 10000 })
     	.then(
-  			function(retorno){ // Función a ejecutarse en caso de éxito        
+  			function(retorno){         
     			if (retorno.data.mensaje == "ok") {
     				respuesta.estado = true;
     				respuesta.mensaje = "Usuario Borrado!";
@@ -65,7 +51,7 @@ angular.module('miSitio')
     				return respuesta;
     			}	
   			},
-  			function(retorno){ // Función a ejecutarse en caso de fallo
+  			function(error){ 
     			respuesta.estado = false;
     			respuesta.mensaje = "Problema de conexión con el servidor.";
     			return respuesta;
@@ -75,11 +61,9 @@ angular.module('miSitio')
 
 	this.recuperaPassword = function(data) {
 
-		var urlCompleta = URLServidor + URLServices + "usuarioService.php";
-
-    	return $http.post(urlCompleta, data,  { timeout: 10000 })
+    	return $http.post(urlFactory.wsUsuario, data,  { timeout: 10000 })
     	.then(
-  			function(retorno){ // Función a ejecutarse en caso de éxito        
+  			function(retorno){         
     			if (retorno.data.mensaje != "error") {
     				respuesta.estado = true;
 	    			respuesta.mensaje = 'Acabamos de enviarte el password. Revisa tu casilla de e-mail :)';
@@ -91,7 +75,7 @@ angular.module('miSitio')
     				return respuesta;
     			}	
   			},
-  			function(retorno){ // Función a ejecutarse en caso de fallo
+  			function(error){ 
     			respuesta.estado = false;
     			respuesta.mensaje = "Problema de conexión con el servidor.";
     			return respuesta;
@@ -101,11 +85,9 @@ angular.module('miSitio')
 
 	this.traerTodosLosUsuarios = function(data) {
 
-		var urlCompleta = URLServidor + URLServices + "usuarioService.php";
-
-    	return $http.post(urlCompleta, data,  { timeout: 10000 })
+    	return $http.post(urlFactory.wsUsuario, data,  { timeout: 10000 })
     	.then(
-  			function(retorno){ // Función a ejecutarse en caso de éxito   ;
+  			function(retorno){    ;
 				if (retorno.data.mensaje == "ok") {
 					respuesta.estado = true;
 	    			respuesta.mensaje = 'Lista actualizada';
@@ -126,7 +108,7 @@ angular.module('miSitio')
 					return respuesta;	
 				}	
 			},
-			function(error){ // Función a ejecutarse en caso de fallo
+			function(error){ 
 				respuesta.estado = false;
 				respuesta.mensaje = "Problema de conexión con el servidor.";
 				respuesta.datos = 'error';
@@ -139,11 +121,11 @@ angular.module('miSitio')
 
 	// this.modificaInformacion = function(data){
 
-	// 	var urlCompleta = URLServidor + URLServices + "usuarioService.php";
+	
 
- //    	return $http.post(urlCompleta, data,  { timeout: 10000 })
+ //    	return $http.post(urlFactory.wsUsuario, data,  { timeout: 10000 })
  //    	.then(
- //  			function(retorno){ // Función a ejecutarse en caso de éxito        
+ //  			function(retorno){         
  //    			if (retorno.data.mensaje == "ok") {
  //    				respuesta.estado = true;
 	//     			respuesta.mensaje = 'Información modificada! :)';
@@ -162,7 +144,7 @@ angular.module('miSitio')
  //    				return respuesta;	
  //    			}	
  //  			},
- //  			function(retorno){ // Función a ejecutarse en caso de fallo
+ //  			function(retorno){ 
  //    			respuesta.estado = false;
  //    			respuesta.mensaje = "Problema de conexión con el servidor.";
  //    			return respuesta;
@@ -172,11 +154,11 @@ angular.module('miSitio')
 
 	// this.modificaFotoPerfil = function(data){
 
-	// 	var urlCompleta = URLServidor + URLServices + "usuarioService.php";
+	
 
- //    	return $http.post(urlCompleta, data,  { timeout: 30000 })
+ //    	return $http.post(urlFactory.wsUsuario, data,  { timeout: 30000 })
  //    	.then(
- //  			function(retorno){ // Función a ejecutarse en caso de éxito        
+ //  			function(retorno){         
  //    			if (retorno.data.mensaje == "ok") {
  //    				respuesta.estado = true;
 	//     			respuesta.mensaje = 'Foto Modificada! :)';
@@ -196,7 +178,7 @@ angular.module('miSitio')
  //    				return respuesta;	
  //    			}	
  //  			},
- //  			function(retorno){ // Función a ejecutarse en caso de fallo
+ //  			function(retorno){ 
  //    			respuesta.estado = false;
  //    			respuesta.mensaje = "Problema de conexión con el servidor.";
  //    			return respuesta;
@@ -206,11 +188,11 @@ angular.module('miSitio')
 
 	// this.eliminaCuenta = function(data){
 
-	// 	var urlCompleta = URLServidor + URLServices + "usuarioService.php";
+	
 
- //    	return $http.post(urlCompleta, data,  { timeout: 10000 })
+ //    	return $http.post(urlFactory.wsUsuario, data,  { timeout: 10000 })
  //    	.then(
- //  			function(retorno){ // Función a ejecutarse en caso de éxito        
+ //  			function(retorno){         
  //    			if (retorno.data.mensaje == "ok") {
  //    				respuesta.estado = true;
 	//     			return respuesta;
@@ -221,7 +203,7 @@ angular.module('miSitio')
  //    				return respuesta;
  //    			}	
  //  			},
- //  			function(retorno){ // Función a ejecutarse en caso de fallo
+ //  			function(retorno){ 
  //    			respuesta.estado = false;
  //    			respuesta.mensaje = "Problema de conexión con el servidor.";
  //    			return respuesta;
@@ -231,11 +213,11 @@ angular.module('miSitio')
 
 	// this.actualizaListaVehiculos = function(data){
 
-	// 	var urlCompleta = URLServidor + URLServices + "usuarioService.php";
+	
 
- //    	return $http.post(urlCompleta, data,  { timeout: 10000 })
+ //    	return $http.post(urlFactory.wsUsuario, data,  { timeout: 10000 })
  //    	.then(
- //  			function(retorno){ // Función a ejecutarse en caso de éxito   ;
+ //  			function(retorno){    ;
 	// 			if (retorno.data.mensaje == "ok") {
 	// 				respuesta.estado = true;
 	//     			respuesta.mensaje = 'Lista actualizada';
@@ -256,7 +238,7 @@ angular.module('miSitio')
 	// 				return respuesta;	
 	// 			}	
 	// 		},
-	// 		function(retorno){ // Función a ejecutarse en caso de fallo
+	// 		function(retorno){ 
 	// 			respuesta.estado = false;
 	// 			respuesta.mensaje = "Problema de conexión con el servidor.";
 	// 			respuesta.datos = 'error';
@@ -268,11 +250,11 @@ angular.module('miSitio')
 
 	// this.actualizaListaHistorial = function(data){
 
-	// 	var urlCompleta = URLServidor + URLServices + "usuarioService.php";
+	
 
- //    	return $http.post(urlCompleta, data,  { timeout: 10000 })
+ //    	return $http.post(urlFactory.wsUsuario, data,  { timeout: 10000 })
  //    	.then(
- //  			function(retorno){ // Función a ejecutarse en caso de éxito
+ //  			function(retorno){ 
 	//   			// console.log(retorno);
 	// 			if (retorno.data.mensaje == "ok") {
 	// 				respuesta.estado = true;
@@ -294,7 +276,7 @@ angular.module('miSitio')
 	// 				return respuesta;	
 	// 			}	
 	// 		},
-	// 		function(retorno){ // Función a ejecutarse en caso de fallo
+	// 		function(retorno){ 
 	// 			respuesta.estado = false;
 	// 			respuesta.mensaje = "Problema de conexión con el servidor.";
 	// 			respuesta.datos = 'error';
@@ -306,11 +288,11 @@ angular.module('miSitio')
 
 	// this.traeVehiculosClienteInicio = function(data){
 
-	// 	var urlCompleta = URLServidor + URLServices + "usuarioService.php";
+	
 
- //    	return $http.post(urlCompleta, data,  { timeout: 10000 })
+ //    	return $http.post(urlFactory.wsUsuario, data,  { timeout: 10000 })
 	//     .then(
-	// 		function(retorno){ // Función a ejecutarse en caso de éxito   ;
+	// 		function(retorno){    ;
 	// 			// console.log(retorno);
 	// 			if (retorno.data.mensaje == "ok") {
 	// 				respuesta.estado = true;
@@ -332,7 +314,7 @@ angular.module('miSitio')
 	// 				return respuesta;	
 	// 			}	
 	// 		},
-	// 		function(retorno){ // Función a ejecutarse en caso de fallo
+	// 		function(retorno){ 
 	// 			respuesta.estado = false;
 	// 			respuesta.mensaje = "Problema de conexión con el servidor.";
 	// 			respuesta.datos = 'error';
