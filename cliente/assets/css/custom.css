@@ -38,4 +38,8 @@ form input.ng-invalid.ng-touched {
 	vertical-align: middle !important;
 }
 
+.center {
+	text-align:center;
+}
+
 

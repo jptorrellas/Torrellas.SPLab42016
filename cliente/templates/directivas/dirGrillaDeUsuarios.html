@@ -16,7 +16,7 @@
         <tbody ng-repeat="usuario in directivaGrillaUsuariosDatos.lista.datos" style="align:middle;">			
 			<tr>
 				<td style="text-align:center;">{{usuario.id}}</td>
-			    <td style="text-align:center;"><img style="width:50px; border-radius:50%;" ng-src="{{urlimg}}{{usuario.foto}}"></td>
+			    <td style="text-align:center;"><div style="width:50px; height:50px;"><img style="width:100%; height:100%;  border-radius:50%;" ng-src="{{urlimg}}{{usuario.foto}}"></div></td>
 			    <td>{{usuario.nombre}}</td>
 			    <td>{{usuario.email}}</td>
 			    <td>{{usuario.rol}}</td>
@@ -29,92 +29,115 @@
 		</tbody>
 	</table>
 
-    <!-- Popup Recuperar Password -->
-    <div class="modal fade" id="popupEditarUsuario" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
-        <link rel="stylesheet" href="assets/css/pages/page_log_reg_v2.css">
-        <form name="frmEditarUsuario" novalidate>
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                        <h4 class="modal-title">Editar Usuario</h4>
-                    </div>
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <h5>NOMBRE USUARIO</h5>
+    <!-- Popup Editar Usuario -->
+    <div class="modal fade" id="popupEditarUsuario" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;"> 
+        
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title">{{frmEditarUsuarioTitulo}}</h4>
+                </div>
+                <div class="modal-body">
+                    
+                    <div class="reg-block" style="width:90%;">
+
+                        <!-- form editar usuario -->
+                        <form name="frmEditarUsuario" novalidate>
                                 
-                                
-                                    <!--Reg Block-->
-                                    <div class="reg-block">
-
-                                        <form name="frmAltaUsuario" class="sky-form" style="box-shadow: none; border:none;" novalidate>
-
-                                            <div class="input-group margin-bottom-20">
-                                                <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
-                                                <input name="email" type="email" class="form-control" placeholder="Email" ng-model="altaUsuarioData.email" required/>
-                                            </div>
-                                            <div class="messages" ng-show="frmAltaUsuario.$submitted || frmAltaUsuario.email.$touched">
-                                                <span ng-show="frmAltaUsuario.email.$error.required">El campo es obligatorio.</span>
-                                                <span ng-show="frmAltaUsuario.email.$error.email">Formato de email incorrecto.</span>
-                                            </div>
-
-                                            
-                                            <div class="input-group margin-bottom-20">
-                                                <span class="input-group-addon"><i class="fa fa-user"></i></span>
-                                                <input name="nombre" type="text" class="form-control" placeholder="Nombre" ng-model="altaUsuarioData.nombre" required>
-                                            </div>
-                                            <div class="messages" ng-show="frmAltaUsuario.$submitted || frmAltaUsuario.nombre.$touched">
-                                                <span ng-show="frmAltaUsuario.nombre.$error.required">El campo es obligatorio.</span>
-                                            </div>
-                                            
-                                            <div class="input-group margin-bottom-20">
-                                                <span class="input-group-addon"><i class="fa fa-lock"></i></span>
-                                                <input name="password1" type="password" class="form-control" placeholder="Ingrese Password" ng-model="altaUsuarioData.password1" required>
-                                            </div>
-                                            <div class="messages" ng-show="frmAltaUsuario.$submitted || frmAltaUsuario.password1.$touched">
-                                                <span ng-show="frmAltaUsuario.password1.$error.required">El campo es obligatorio.</span>
-                                            </div>
-
-                                            <div class="input-group margin-bottom-20">
-                                                <span class="input-group-addon"><i class="fa fa-lock"></i></span>
-                                                <input name="password2" type="password" class="form-control" placeholder="Reingrese Password" ng-model="altaUsuarioData.password2" required>
-                                            </div>
-                                            <div class="messages" ng-show="frmAltaUsuario.$submitted || frmAltaUsuario.password2.$touched">
-                                                <span ng-show="frmAltaUsuario.password2.$error.required">El campo es obligatorio.</span>
-                                                <span ng-show="altaUsuarioData.password1 != altaUsuarioData.password2">Los passwords no coinciden.</span>
-                                            </div>
-                                    
-                                            <label class="select" ng-if="rol == 'admin'">
-                                                <select ng-model="altaUsuarioData.rol">
-                                                    <option value="1">Administrador</option>
-                                                    <option value="2">Comprador</option>
-                                                    <option value="3">Vendedor</option>
-                                                </select>
-                                                <i style="top:10px; background:none;"></i>
-                                            </label>
-
-                                            <label for="file" class="input input-file">
-                                                <div class="button"><input type="file" name="file" multiple="" onchange="this.parentNode.nextSibling.value = this.value" ng-model="altaUsuarioData.foto" base-sixty-four-input>Buscar</div><input type="text" placeholder="Cargar una imagen" readonly="">
-                                            </label>
-                                            
-                                        </form>
-                                    </div>
-                                    <!--End Reg Block-->
-                                
-
+                            <div class="input-group margin-bottom-20 center" style="width:100%;">
+                                <img ng-src="{{fotoUsuarioAGuardar}}" class="rounded-x" style="height:100px; width:100px; border: 1px solid #ccc;" />
                             </div>
-                        </div>
+
+
+                            <div class="input-group margin-bottom-20">
+                                <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
+                                <input name="email" type="email" class="form-control" placeholder="Email" ng-model="editarUsuarioData.email" required/>
+                            </div>
+                            <div class="messages" ng-show="frmEditarUsuario.$submitted || frmEditarUsuario.email.$touched">
+                                <span ng-show="frmEditarUsuario.email.$error.required">El campo es obligatorio.</span>
+                                <span ng-show="frmEditarUsuario.email.$error.email">Formato de email incorrecto.</span>
+                            </div>
+
+                            
+                            <div class="input-group margin-bottom-20">
+                                <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                                <input name="nombre" type="text" class="form-control" placeholder="Nombre" ng-model="editarUsuarioData.nombre" required>
+                            </div>
+                            <div class="messages" ng-show="frmEditarUsuario.$submitted || frmEditarUsuario.nombre.$touched">
+                                <span ng-show="frmEditarUsuario.nombre.$error.required">El campo es obligatorio.</span>
+                            </div>
+                            
+                            <div class="input-group margin-bottom-20">
+                                <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+                                <input name="password1" type="password" class="form-control" placeholder="Ingrese Password" ng-model="editarUsuarioData.password1" required>
+                            </div>
+                            <div class="messages" ng-show="frmEditarUsuario.$submitted || frmEditarUsuario.password1.$touched">
+                                <span ng-show="frmEditarUsuario.password1.$error.required">El campo es obligatorio.</span>
+                            </div>
+
+                            <div class="input-group margin-bottom-20">
+                                <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+                                <input name="password2" type="password" class="form-control" placeholder="Reingrese Password" ng-model="editarUsuarioData.password2" required>
+                            </div>
+                            <div class="messages" ng-show="frmEditarUsuario.$submitted || frmEditarUsuario.password2.$touched">
+                                <span ng-show="frmEditarUsuario.password2.$error.required">El campo es obligatorio.</span>
+                                <span ng-show="editarUsuarioData.password1 != editarUsuarioData.password2">Los passwords no coinciden.</span>
+                            </div>
+                    
+                            <label class="select" ng-if="rol == 'admin'">
+                                <select ng-model="editarUsuarioData.rol">
+                                    <option value="admin">Administrador</option>
+                                    <option value="comprador">Comprador</option>
+                                    <option value="vendedor">Vendedor</option>
+                                </select>
+                                <i style="top:10px; background:none;"></i>
+                            </label>
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <button type="button" class="btn btn-default btn-block" ng-model="btnModificarFotoUsuario" ng-click="modificarFotoUsuario()">{{btnModificarFotoUsuario}}</button>
+                                </div>
+                            </div>
+                            <div class="row" ng-show="cargaFotoUsuarioShow" style="margin-top:15px;">
+                                <div class="col-md-12">
+                                    <label for="file" class="input input-file">
+                                        <div class="button"><input type="file" name="file" onchange="this.parentNode.nextSibling.value = this.value" id="fileInput2">Buscar</div><input type="text" placeholder="Cargar una imagen" readonly="">
+                                    </label>
+                                </div>
+
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <h6>Imagen elegida:</h6>
+                                        </div>
+                                    </div>
+                                    <div class="row"  style="height:100px; width:100px;">
+                                        <div class="col-md-12">
+                                            <img-crop image="imagenUsuarioElegida" area-type="square" result-image="fotoUsuarioAGuardar" on-load-done="imagenUsuarioAbierta = 1" result-image-size="150" area-min-size="150" height="150"></img-crop>
+                                        </div>
+                                    </div>                   
+                                </div>     
+                            </div>
+                        </form>
+                        <!-- fin form editar usuario -->
+                                       
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn-u btn-u-default" data-dismiss="modal">Cerrar</button>
-                        <button type="submit" class="btn-u btn-u-primary" ng-click="guardarUsuarioEditado()" ng-disabled="frmAltaUsuario.$invalid || altaUsuarioData.password1 != altaUsuarioData.password2" data-dismiss="modal">Modificar</button>
-                    </div>
+                    
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-u btn-u-default" data-dismiss="modal" ng-click="cargaFotoUsuarioShow = false">Cerrar</button>
+                    <button type="submit" class="btn-u btn-u-primary" ng-click="guardarUsuarioEditado()" ng-disabled="frmEditarUsuario.$invalid || editarUsuarioData.password1 != editarUsuarioData.password2" data-dismiss="modal">Modificar</button>
                 </div>
             </div>
-        </form>
+        </div>
     </div>
+
+    
 </div>
+
+
 
 
 

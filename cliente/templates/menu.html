@@ -1,0 +1,190 @@
+
+<div class="header" style="background-image:url('assets/img/bg/bg-1.png');" ng-controller="MenuCtrl">
+    <div class="container" style="width:90%">
+        <!-- Logo -->
+        <div class="logo">
+            <div class="row">
+                <div class="col col-md-3" style="line-height:5px;">
+                    <img src="assets/img/logo/logo-fra.png" alt="Logo" style="height:25%;">
+                    <p style="font-size:8px;"><b>Torrellas Juan Pablo</b></p>
+                    <p style="font-size:9px;">Laboratorio IV - 2016</p>
+                </div>
+            </div>   
+        </div>
+        <!-- End Logo -->
+
+        <!-- Topbar -->   
+        <div class="topbar">
+            <ul class="loginbar pull-right"  style="margin:15px 15px 0px 0px;">
+                <li class="hoverSelector">
+
+                    <img class="rounded-x inline-block" style="border:2px solid #555; margin-right:5px;" ng-src="{{fotoPerfilAGuardar}}" height="35">
+                    <div class="inline-block"><h5><b>{{usuarioActual.nombre}}</b></h5></div>
+
+
+                    <ul class="languages hoverSelectorBlock" style="margin-top:5px;">
+                        <li class="page-scroll">
+                            <a href=""  data-toggle="modal" data-target="#popupEditarPerfil"><i class="fa fa-cog"></i>&nbsp Perfil</a>
+                        </li class="page-scroll">
+                        <li><a href="" ng-click="logout()"><i class="fa fa-sign-out"></i>&nbsp Logout</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Toggle get grouped for better mobile display -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="fa fa-bars"></span>
+        </button>
+        <!-- End Toggle -->
+    </div><!--/end container-->
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse mega-menu navbar-responsive-collapse">
+        <div class="container" style="width: 90%">         
+
+            <ul class="nav navbar-nav">               
+                <li class="dropdown">
+                    <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">
+                        USUARIOS
+                    </a>
+                    <ul class="dropdown-menu pull-right">
+                        <li class="page-scroll">
+                            <a ng-href="#/admin/altaUsuario">ALTA USUARIO</a>
+                        </li>
+
+                        <li class="page-scroll">
+                            <a ng-href="#/admin/grillaUsuarios">GRILLA USUARIOS</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+
+            <ul class="nav navbar-nav">
+                <li class="dropdown">
+                    <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">
+                        PRODUCTOS
+                    </a>
+                    <ul class="dropdown-menu pull-left">
+                        <li class="page-scroll">
+                            <a ng-href="#/admin/altaProducto">ALTA PRODUCTO</a>
+                        </li>
+
+                        <li class="page-scroll">
+                            <a ng-href="#/admin/grillaProductos">GRILLA PRODUCTOS</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>           
+
+        </div><!--/end container-->
+    </div><!--/navbar-collapse-->
+</div>
+
+<!-- Popup Editar Perfil -->
+<div class="modal fade" id="popupEditarPerfil" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;"> 
+    
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title">{{frmEditarPerfilTitulo}}</h4>
+            </div>
+            <div class="modal-body">
+                
+                <div class="reg-block" style="width:90%;">
+
+                    <!-- form editar Perfil -->
+                    <form name="frmEditarPerfil" novalidate>
+                            
+                        <div class="input-group margin-bottom-20 center" style="width:100%;" ng-show="cargaFotoPerfilShow">
+                            <img ng-src="{{fotoPerfilAGuardar}}" class="rounded-x" style="height:100px; width:100px; border: 1px solid #ccc;" />
+                        </div>
+
+
+                        <div class="input-group margin-bottom-20">
+                            <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
+                            <input name="email" type="email" class="form-control" placeholder="Email" ng-model="editarPerfilData.email" required/>
+                        </div>
+                        <div class="messages" ng-show="frmEditarPerfil.$submitted || frmEditarPerfil.email.$touched">
+                            <span ng-show="frmEditarPerfil.email.$error.required">El campo es obligatorio.</span>
+                            <span ng-show="frmEditarPerfil.email.$error.email">Formato de email incorrecto.</span>
+                        </div>
+
+                        
+                        <div class="input-group margin-bottom-20">
+                            <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                            <input name="nombre" type="text" class="form-control" placeholder="Nombre" ng-model="editarPerfilData.nombre" required>
+                        </div>
+                        <div class="messages" ng-show="frmEditarPerfil.$submitted || frmEditarPerfil.nombre.$touched">
+                            <span ng-show="frmEditarPerfil.nombre.$error.required">El campo es obligatorio.</span>
+                        </div>
+                        
+                        <div class="input-group margin-bottom-20">
+                            <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+                            <input name="password1" type="password" class="form-control" placeholder="Ingrese Password" ng-model="editarPerfilData.password1" required>
+                        </div>
+                        <div class="messages" ng-show="frmEditarPerfil.$submitted || frmEditarPerfil.password1.$touched">
+                            <span ng-show="frmEditarPerfil.password1.$error.required">El campo es obligatorio.</span>
+                        </div>
+
+                        <div class="input-group margin-bottom-20">
+                            <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+                            <input name="password2" type="password" class="form-control" placeholder="Reingrese Password" ng-model="editarPerfilData.password2" required>
+                        </div>
+                        <div class="messages" ng-show="frmEditarPerfil.$submitted || frmEditarPerfil.password2.$touched">
+                            <span ng-show="frmEditarPerfil.password2.$error.required">El campo es obligatorio.</span>
+                            <span ng-show="editarPerfilData.password1 != editarPerfilData.password2">Los passwords no coinciden.</span>
+                        </div>
+                
+                        <label class="select" ng-if="usuarioActual.rol == 'admin'">
+                            <select ng-model="editarPerfilData.rol">
+                                <option value="admin">Administrador</option>
+                                <option value="comprador">Comprador</option>
+                                <option value="vendedor">Vendedor</option>
+                            </select>
+                            <i style="top:10px; background:none;"></i>
+                        </label>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <button type="button" class="btn btn-default btn-block" ng-model="btnModificarFotoPerfil" ng-click="modificarFotoPerfil()">{{btnModificarFotoPerfil}}</button>
+                            </div>
+                        </div>
+                        <div class="row" ng-show="cargaFotoPerfilShow" style="margin-top:15px;">
+                            <div class="col-md-12">
+                                <label for="file" class="input input-file">
+                                    <div class="button"><input type="file" name="file" onchange="this.parentNode.nextSibling.value = this.value" id="fileInput3">Buscar</div><input type="text" placeholder="Cargar una imagen" readonly="">
+                                </label>
+                            </div>
+
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <h6>Imagen elegida:</h6>
+                                    </div>
+                                </div>
+                                <div class="row"  style="height:100px; width:100px;">
+                                    <div class="col-md-12">
+                                        <img-crop image="imagenPerfilElegida" area-type="square" result-image="fotoPerfilAGuardar" on-load-done="imagenPerfilAbierta = 1" result-image-size="150" area-min-size="150" height="150"></img-crop>
+                                    </div>
+                                </div>                   
+                            </div>     
+                        </div>
+                    </form>
+                    <!-- fin form editar Perfil -->
+                                   
+                </div>
+                
+                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn-u btn-u-default" data-dismiss="modal" ng-click="modificarFotoPerfil()">Cerrar</button>
+                <button type="submit" class="btn-u btn-u-primary" ng-click="guardarPerfilEditado()" ng-disabled="frmEditarPerfil.$invalid || editarPerfilData.password1 != editarPerfilData.password2" data-dismiss="modal">Modificar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div ui-view="contenido"></div>

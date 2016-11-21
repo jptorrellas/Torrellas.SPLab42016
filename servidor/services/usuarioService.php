@@ -35,12 +35,6 @@ $crud = new Crud;
 */
 
 switch ($objRecibido->accion) {
-
-	case 'devolver':
-
-		echo $jsonObjeto;
-
-		break;
 	
 	case 'login':
 
@@ -50,7 +44,7 @@ switch ($objRecibido->accion) {
 			// Guarda el registro del login
 			// $crud->insert("registro_logins", "id_usuario, dispositivo_usuario", "'$usuario->id', '$objRecibido->dispositivo'");
 			// Trae la descripción del rol
-			$rolDescripción = $crud->select("roles", "descripcion", "id = '$usuario->id_rol'");
+			$rolDescripcion = $crud->select("roles", "descripcion", "id = '$usuario->id_rol'");
 
 			// TOKEN
 			$key = 'miToken';
@@ -58,7 +52,8 @@ switch ($objRecibido->accion) {
 				"id" => $usuario->id,
 				"nombre" => $usuario->nombre,
 				"email" => $usuario->email,
-				"rol" => $rolDescripción->descripcion,
+				"password" => $usuario->password,
+				"rol" => $rolDescripcion->descripcion,
 				"foto" => $usuario->foto,
 				"exp" => time() + 900
 				// "iat" => 1356999524,
@@ -135,17 +130,26 @@ switch ($objRecibido->accion) {
 			echo json_encode($respuesta);
 		}
 		else {
-			if($crud->insert("usuarios", "nombre, email, password, id_rol, fecha_alta", "'$objRecibido->nombre', '$objRecibido->email', '$objRecibido->password1', '$objRecibido->rol', '$fechaActual'")) {
+			
+			// trae descricion de rol
+			$idRol = $crud->select("roles", "id", "descripcion = '$objRecibido->rol'");
+
+			if($crud->insert("usuarios", "nombre, email, password, id_rol, fecha_alta", "'$objRecibido->nombre', '$objRecibido->email', '$objRecibido->password1', '$idRol->id', '$fechaActual'")) {
 
 				$usuarioCreado = $crud->select("usuarios", "id", "email = '$objRecibido->email'");
 
 				if (isset($objRecibido->foto) && $objRecibido->foto != null && $objRecibido->foto != '') {
 					
 					// Obtiene extension del archivo a subir
-					$extension = explode("/", $objRecibido->foto[0]->filetype);
-					$extension = $extension[1];
-
-					$Base64Img = base64_decode($objRecibido->foto[0]->base64);
+					//$extension = explode("/", $objRecibido->foto[0]->filetype);
+					//$extension = $extension[1];
+					//$Base64Img = base64_decode($objRecibido->foto[0]->base64);
+					
+					$array = explode(',', $objRecibido->foto);
+					$objRecibido->foto = $array[1];
+					
+					$extension = 'png';
+					$Base64Img = base64_decode($objRecibido->foto);
 					
 					$nombreFoto = $usuarioCreado->id.'-'.$fechaActual.'.'.$extension;
 					$archivoImagen = '../img/usuarios/'.$nombreFoto;
@@ -164,6 +168,69 @@ switch ($objRecibido->accion) {
 				$respuesta['mensaje'] = 'error';
 				echo json_encode($respuesta);
 				
+			}
+		}
+		break;
+
+	case 'guardarUsuarioEditado':
+		
+		ini_set('date.timezone','America/Buenos_Aires'); 
+		$fechaActual = date("Y-m-d_H-i-s");
+	
+
+		$usuario = $crud->select("usuarios", "*", "id = '$objRecibido->id' && estado = 0");
+		// Si no existe el usuario o esta en estado 0
+		if ($usuario != null) {
+			$respuesta['mensaje'] = 'error. no existe el usuario';
+			echo json_encode($respuesta);
+		}
+		else {
+			
+			// trae id de rol
+			$idRol = $crud->select("roles", "id", "descripcion = '$objRecibido->rol'");
+
+			// Si no actualizó la foto
+			if ($objRecibido->foto == '') {
+				// Actualiza solo datos
+				$crud->update("usuarios", "nombre = '$objRecibido->nombre', email = '$objRecibido->email', password = '$objRecibido->password1', id_rol = '$idRol->id'", "id = '$objRecibido->id'");
+
+				// Trae datos actualizados
+				$usuarioActualizado = $crud->select("usuarios", "*", "id = '$objRecibido->id'");
+				// trae descricion de rol
+				$descripcionRol = $crud->select("roles", "descripcion", "id = '$usuarioActualizado->id_rol'");
+				$usuarioActualizado->rol = $descripcionRol->descripcion;
+
+				$respuesta['mensaje'] = 'ok';
+				$respuesta['datos'] = $usuarioActualizado;
+				echo json_encode($respuesta);
+			}
+			// Si actualizó la foto
+			else {
+
+				// Guarda la foto
+				$array = explode(',', $objRecibido->foto);
+				$objRecibido->foto = $array[1];
+				
+				$extension = 'png';
+				$Base64Img = base64_decode($objRecibido->foto);
+				
+				$nombreFoto = $objRecibido->id.'-'.$fechaActual.'.'.$extension;
+				$archivoImagen = '../img/usuarios/'.$nombreFoto;
+				
+				file_put_contents($archivoImagen, $Base64Img);
+
+				// Actualiza datos y foto
+				$crud->update("usuarios", "nombre = '$objRecibido->nombre', email = '$objRecibido->email', password = '$objRecibido->password1', foto = '$nombreFoto', id_rol = '$idRol->id'", "id = '$objRecibido->id'");
+
+				// Trae datos actualizados
+				$usuarioActualizado = $crud->select("usuarios", "*", "id = '$objRecibido->id'");
+				// trae descricion de rol
+				$descripcionRol = $crud->select("roles", "descripcion", "id = '$usuarioActualizado->id_rol'");
+				$usuarioActualizado->rol = $descripcionRol->descripcion;
+
+				$respuesta['mensaje'] = 'ok';
+				$respuesta['datos'] = $usuarioActualizado;
+				echo json_encode($respuesta);
 			}
 		}
 		break;

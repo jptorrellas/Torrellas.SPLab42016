@@ -9,16 +9,44 @@ angular.module('miSitio')
     	return $http.post(urlFactory.wsUsuario, data,  { timeout: 10000 })
     	.then(
   			function(retorno){ 
-			   
+  				//console.log(retorno);			   
     			if (retorno.data.mensaje == "ok") {
     				respuesta.estado = true;
-	    			respuesta.mensaje = 'Usuario Registrado. Ya puede acceder al sistema :)';
-
 	    			return respuesta;
     			}
     			if (retorno.data.mensaje == "error") {
     				respuesta.estado = false;
     				respuesta.mensaje = "Ya existe un usuario con ese email";
+    				return respuesta;
+    			}
+    			if (retorno.data.mensaje != "ok" && retorno.data != "error") {
+    				respuesta.estado = false;
+    				respuesta.mensaje = "ERROR DESCONOCIDO";
+    				return respuesta;	
+    			}	
+  			},
+  			function(error){ 
+    			respuesta.estado = false;
+    			respuesta.mensaje = "Problema de conexión con el servidor.";
+    			return respuesta;
+  			}
+    	);
+	};
+
+	this.guardarUsuarioEditado = function(data) { 
+
+    	return $http.post(urlFactory.wsUsuario, data,  { timeout: 10000 })
+    	.then(
+  			function(retorno){ 
+  				console.log(retorno);			   
+    			if (retorno.data.mensaje == "ok") {
+    				respuesta.estado = true;
+    				respuesta.datos = retorno.data.datos;
+	    			return respuesta;
+    			}
+    			if (retorno.data.mensaje == "error. no existe el usuario") {
+    				respuesta.estado = false;
+    				respuesta.mensaje = "El usuario que intenta editar ya no existe en el sistema. Por favor actualice la grilla.";
     				return respuesta;
     			}
     			if (retorno.data.mensaje != "ok" && retorno.data != "error") {
@@ -57,7 +85,7 @@ angular.module('miSitio')
     			return respuesta;
   			}
     	);
-	};	
+	};
 
 	this.recuperaPassword = function(data) {
 
