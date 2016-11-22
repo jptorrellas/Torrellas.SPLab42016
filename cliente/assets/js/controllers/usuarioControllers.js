@@ -1,6 +1,6 @@
 angular.module('miSitio')
 
-.controller('MenuCtrl', function($scope, $state, $auth, growl, usuarioService, usuarioFactory, urlFactory) {
+.controller('MenuCtrl', function($scope, $rootScope, $state, $auth, growl, usuarioService, usuarioFactory, urlFactory) {
 
 
   // Logout
@@ -18,56 +18,56 @@ angular.module('miSitio')
     });
   };
 
-
-  $scope.usuarioActual = usuarioFactory.payload;
-  $scope.urlImg = urlFactory.imgPerfilUsuario + $scope.usuarioActual.foto;
+  // Los $rootScope son para que actualice en tiempo real los cambios de perfil.
+  $rootScope.usuarioActual = usuarioFactory.payload;
+  $rootScope.usuarioActual.nombre = usuarioFactory.payload.nombre;
+  $rootScope.urlImg = urlFactory.imgPerfilUsuario + usuarioFactory.payload.foto;
 
   $scope.frmEditarPerfilTitulo = 'Editar Perfil';
   
-  $scope.editarPerfilData =
-  {
-    id: $scope.usuarioActual.id,
-    nombre: $scope.usuarioActual.nombre,
-    email: $scope.usuarioActual.email,
-    password1: $scope.usuarioActual.password,
-    password2: $scope.usuarioActual.password,
-    rol: $scope.usuarioActual.rol,
-    foto: $scope.urlImg,
-    accion: 'guardarUsuarioEditado'
+  $scope.iniciarEditarPerfilData = function() {
+    $scope.editarPerfilData =
+    {
+      id: $rootScope.usuarioActual.id,
+      nombre: $rootScope.usuarioActual.nombre,
+      email: $rootScope.usuarioActual.email,
+      password1: $rootScope.usuarioActual.password,
+      password2: $rootScope.usuarioActual.password,
+      rol: $rootScope.usuarioActual.rol,
+      foto: $rootScope.urlImg,
+      accion: 'guardarUsuarioEditado'
+    };
   };
+  $scope.iniciarEditarPerfilData();
 
-  $scope.btnModificarFotoPerfil = 'Modificar foto perfil';
-  
+  $scope.btnModificarFotoPerfil = 'Modificar foto perfil';  
   $scope.fotoPerfilAGuardar = $scope.editarPerfilData.foto;
   $scope.imagenPerfilAbierta = 0;
-
-  console.log($scope.fotoPerfilAGuardar);
-
-
+  
+  $scope.modificarFotoPerfil = function(valor=null) {
     
-  $scope.modificarFotoPerfil = function() {
-    
-
     $scope.fotoPerfilAGuardar = $scope.editarPerfilData.foto;
   
-    if ($scope.btnModificarFotoPerfil == 'Modificar foto perfil') {
+    if ($scope.btnModificarFotoPerfil == 'Modificar foto perfil' && valor == null) {
       $scope.btnModificarFotoPerfil = 'Cancelar modificación foto perfil';
       $scope.cargaFotoPerfilShow = true;
       return;
     }
-    if ($scope.btnModificarFotoPerfil == 'Cancelar modificación foto perfil') {
+    if ($scope.btnModificarFotoPerfil == 'Cancelar modificación foto perfil' || valor == false) {
       $scope.btnModificarFotoPerfil = 'Modificar foto perfil';
-      
-      //$scope.imagenPerfilElegida = $scope.editarPerfilData.foto;
       $scope.imagenPerfilAbierta = 0;
       $scope.imagenPerfilElegida = '';
       $scope.fotoPerfilAGuardar = $scope.editarPerfilData.foto;
       $scope.cargaFotoPerfilShow = false;
     }
+    // si se cierra el popup recupera datos originales de perfil
+    if (valor == false) {
+
+      $scope.iniciarEditarPerfilData();
+    }
   };
 
   $scope.guardarPerfilEditado = function() {    
-
 
     if ($scope.imagenPerfilAbierta == 0) {
       $scope.editarPerfilData.foto = '';
@@ -82,10 +82,9 @@ angular.module('miSitio')
         if (respuesta.estado == true) {
 
           usuarioFactory.payload = respuesta.datos;
-          growl.success("Edición de perfil ok!", {ttl: 3000}); 
-          // if ($scope.usuarioActual.rol == 'admin') {
-          //   $state.go('admin.adminGrillaUsuarios');
-          // }       
+          $rootScope.usuarioActual = usuarioFactory.payload;
+          $rootScope.urlImg = urlFactory.imgPerfilUsuario + usuarioFactory.payload.foto;
+          growl.success("Edición de perfil ok!", {ttl: 3000});       
         }
         else {
           growl.error(respuesta.mensaje, {ttl: 3000});
@@ -94,8 +93,7 @@ angular.module('miSitio')
     );
     $scope.cargaFotoPerfilShow = false;
   };
-
-  
+ 
 
   // ngImageCrop
   var handleFileSelect=function(evt) {
@@ -112,12 +110,7 @@ angular.module('miSitio')
   // fin ngImageCrop
 
   $scope.imagenPerfilElegida = '';
-  $scope.fotoPerfilAGuardar = $scope.editarPerfilData.foto;
-
-  
-
-
-  
+  $scope.fotoPerfilAGuardar = $scope.editarPerfilData.foto;  
 })
 
 .controller('LoginCtrl', function($scope, $state, $auth, growl, usuarioService, usuarioFactory) {

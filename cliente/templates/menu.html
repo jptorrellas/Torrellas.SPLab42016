@@ -18,11 +18,11 @@
             <ul class="loginbar pull-right"  style="margin:15px 15px 0px 0px;">
                 <li class="hoverSelector">
 
-                    <img class="rounded-x inline-block" style="border:2px solid #555; margin-right:5px;" ng-src="{{fotoPerfilAGuardar}}" height="35">
+                    <img class="rounded-x inline-block" style="border:2px solid #555; margin-right:5px;" ng-src="{{urlImg}}" ng-model="urlImg" height="35">
                     <div class="inline-block"><h5><b>{{usuarioActual.nombre}}</b></h5></div>
 
 
-                    <ul class="languages hoverSelectorBlock" style="margin-top:5px;">
+                    <ul class="languages hoverSelectorBlock">
                         <li class="page-scroll">
                             <a href=""  data-toggle="modal" data-target="#popupEditarPerfil"><i class="fa fa-cog"></i>&nbsp Perfil</a>
                         </li class="page-scroll">
@@ -88,7 +88,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="modificarFotoPerfil(false)">×</button>
                 <h4 class="modal-title">{{frmEditarPerfilTitulo}}</h4>
             </div>
             <div class="modal-body">
@@ -180,7 +180,7 @@
                 
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn-u btn-u-default" data-dismiss="modal" ng-click="modificarFotoPerfil()">Cerrar</button>
+                <button type="button" class="btn-u btn-u-default" data-dismiss="modal" ng-click="modificarFotoPerfil(false)">Cerrar</button>
                 <button type="submit" class="btn-u btn-u-primary" ng-click="guardarPerfilEditado()" ng-disabled="frmEditarPerfil.$invalid || editarPerfilData.password1 != editarPerfilData.password2" data-dismiss="modal">Modificar</button>
             </div>
         </div>
