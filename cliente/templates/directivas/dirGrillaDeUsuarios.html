@@ -1,6 +1,7 @@
 <div class="panel panel-u margin-bottom-40" style="overflow:auto;">
     <div class="panel-heading">
-        <h3 class="panel-title"><i class="fa fa-tasks"></i> Lista de usuarios</h3>
+        <h3 class="panel-title inline-block"><i class="fa fa-tasks"></i> Lista de usuarios</h3>
+        <button class="btn btn-u inline-block" style="position:absolute; right:7%;" ng-click="traerTodosLosUsuarios()"><i class="fa fa-refresh"></i></button>
     </div>
     <table class="table table-hover" style="vertical-align:middle !important;">
         <thead>
@@ -14,7 +15,7 @@
             </tr>
         </thead>
         <tbody ng-repeat="usuario in directivaGrillaUsuariosDatos.lista.datos" style="align:middle;">			
-			<tr>
+			<tr ng-if="id != usuario.id">
 				<td style="text-align:center;">{{usuario.id}}</td>
 			    <td style="text-align:center;"><div style="width:50px; height:50px;"><img style="width:100%; height:100%;  border-radius:50%;" ng-src="{{urlimg}}{{usuario.foto}}"></div></td>
 			    <td>{{usuario.nombre}}</td>
@@ -35,7 +36,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="modificarFotoUsuario(false)">×</button>
                     <h4 class="modal-title">{{frmEditarUsuarioTitulo}}</h4>
                 </div>
                 <div class="modal-body">
@@ -45,7 +46,7 @@
                         <!-- form editar usuario -->
                         <form name="frmEditarUsuario" novalidate>
                                 
-                            <div class="input-group margin-bottom-20 center" style="width:100%;">
+                            <div class="input-group margin-bottom-20 center" style="width:100%;" ng-show="cargaFotoUsuarioShow">
                                 <img ng-src="{{fotoUsuarioAGuardar}}" class="rounded-x" style="height:100px; width:100px; border: 1px solid #ccc;" />
                             </div>
 
@@ -127,7 +128,7 @@
                     
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn-u btn-u-default" data-dismiss="modal" ng-click="cargaFotoUsuarioShow = false">Cerrar</button>
+                    <button type="button" class="btn-u btn-u-default" data-dismiss="modal" ng-click="modificarFotoUsuario(false)">Cerrar</button>
                     <button type="submit" class="btn-u btn-u-primary" ng-click="guardarUsuarioEditado()" ng-disabled="frmEditarUsuario.$invalid || editarUsuarioData.password1 != editarUsuarioData.password2" data-dismiss="modal">Modificar</button>
                 </div>
             </div>

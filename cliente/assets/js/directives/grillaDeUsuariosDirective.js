@@ -6,6 +6,7 @@ angular.module('miSitio')
       scope:{
         directivaGrillaUsuariosDatos: '=directivagrillausuariosdatos',
         rol: '@rol',
+        id: '@id',
         urlimg: '@urlimg'     
       },
       replace: true,

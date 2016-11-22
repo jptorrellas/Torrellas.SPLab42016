@@ -18,7 +18,7 @@ angular.module('miSitio')
     });
   };
 
-  // Los $rootScope son para que actualice en tiempo real los cambios de perfil.
+  // Los $rootScope son para que actualice en tiempo real los cambios de Usuario.
   $rootScope.usuarioActual = usuarioFactory.payload;
   $rootScope.usuarioActual.nombre = usuarioFactory.payload.nombre;
   $rootScope.urlImg = urlFactory.imgPerfilUsuario + usuarioFactory.payload.foto;
@@ -293,10 +293,11 @@ angular.module('miSitio')
 
   // Parámetros que se usan en la directiva
   $scope.rol = usuarioFactory.payload.rol;
+  $scope.id = usuarioFactory.payload.id;
   $scope.urlimg = urlFactory.imgPerfilUsuario;
   $scope.directivaGrillaUsuariosDatos = {};
 
-  function traerTodosLosUsuarios() {
+  $scope.traerTodosLosUsuarios = function() {
     $scope.traerTodosLosUsuariosData = { accion: 'traerTodosLosUsuarios' };
     
     usuarioService.traerTodosLosUsuarios($scope.traerTodosLosUsuariosData)
@@ -311,7 +312,7 @@ angular.module('miSitio')
       }
     );
   };
-  traerTodosLosUsuarios();
+  $scope.traerTodosLosUsuarios();
   // Fin Parámetros que se usan en la directiva
   
   $scope.borrarUsuario = function(usuario, index) {
@@ -340,7 +341,7 @@ angular.module('miSitio')
 
     $scope.rol = usuarioFactory.payload.rol;
     $scope.frmEditarUsuarioTitulo = 'Editar Usuario';
-    $scope.btnModificarFotoUsuario = 'Modificar foto perfil';   
+    $scope.btnModificarFotoUsuario = 'Modificar foto usuario';   
     
     $scope.editarUsuarioData =
     {
@@ -356,28 +357,26 @@ angular.module('miSitio')
 
     $scope.fotoUsuarioAGuardar = $scope.editarUsuarioData.foto;
 
-    $scope.modificarFotoUsuario = function() {
+    $scope.modificarFotoUsuario = function(valor=null) {
+    
       $scope.fotoUsuarioAGuardar = $scope.editarUsuarioData.foto;
     
-      if ($scope.btnModificarFotoUsuario == 'Modificar foto perfil') {
-        $scope.btnModificarFotoUsuario = 'Cancelar modificación foto perfil';
+      if ($scope.btnModificarFotoUsuario == 'Modificar foto usuario' && valor == null) {
+        $scope.btnModificarFotoUsuario = 'Cancelar modificación foto usuario';
         $scope.cargaFotoUsuarioShow = true;
         return;
       }
-      if ($scope.btnModificarFotoUsuario == 'Cancelar modificación foto perfil') {
-        $scope.btnModificarFotoUsuario = 'Modificar foto perfil';
-        
-        $scope.imagenUsuarioElegida = $scope.editarUsuarioData.foto;
+      if ($scope.btnModificarFotoUsuario == 'Cancelar modificación foto usuario' || valor == false) {
+        $scope.btnModificarFotoUsuario = 'Modificar foto usuario';
         $scope.imagenUsuarioAbierta = 0;
+        $scope.imagenUsuarioElegida = '';
         $scope.fotoUsuarioAGuardar = $scope.editarUsuarioData.foto;
         $scope.cargaFotoUsuarioShow = false;
       }
     };
 
     $scope.guardarUsuarioEditado = function() {     
-      console.log("guardarUsuarioEditado: Antes rol: "+$scope.rol);
-
-      
+    
       if ($scope.imagenUsuarioAbierta == 0) {
         $scope.editarUsuarioData.foto = '';
       }
@@ -389,10 +388,8 @@ angular.module('miSitio')
       .then( 
         function(respuesta) {          
           if (respuesta.estado == true) {
-            console.log("guardarUsuarioEditado: Despues rol: "+$scope.rol);
             growl.success("Edición de usuario ok!", {ttl: 3000});
-            traerTodosLosUsuarios();
-
+            $scope.traerTodosLosUsuarios();
           }
           else {
             growl.error(respuesta.mensaje, {ttl: 3000});
