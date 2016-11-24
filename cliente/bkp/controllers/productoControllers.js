@@ -35,7 +35,7 @@ angular.module('miSitio')
       password2: $rootScope.usuarioActual.password,
       rol: $rootScope.usuarioActual.rol,
       foto: $rootScope.urlImg,
-      accion: 'modificacion'
+      accion: 'guardarUsuarioEditado'
     };
   };
   $scope.iniciarEditarPerfilData();
@@ -76,7 +76,7 @@ angular.module('miSitio')
       $scope.editarPerfilData.foto = $scope.fotoPerfilAGuardar;
     }
     
-    usuarioService.modificacion($scope.editarPerfilData)
+    usuarioService.guardarUsuarioEditado($scope.editarPerfilData)
     .then( 
       function(respuesta) {          
         if (respuesta.estado == true) {
@@ -110,7 +110,7 @@ angular.module('miSitio')
   // fin ngImageCrop
 
   $scope.imagenPerfilElegida = '';
-  $scope.fotoPerfilAGuardar = $scope.editarPerfilData.foto;
+  $scope.fotoPerfilAGuardar = $scope.editarPerfilData.foto;  
 })
 
 .controller('LoginCtrl', function($scope, $state, $auth, growl, usuarioService, usuarioFactory) {
@@ -152,13 +152,15 @@ angular.module('miSitio')
           growl.info("Bienvenido " + usuarioFactory.payload.nombre + "!", {ttl: 2000});
 
           if (usuarioFactory.payload.rol == "admin") {
-            $state.go('menu.adminGrillaUsuarios');
+            $state.go('admin.adminGrillaUsuarios');
           }
           if (usuarioFactory.payload.rol == "comprador") {
-            $state.go('menu.compradorGrillaProductos');
+            alert("login ok: comprador");
+            // $state.go('comprador.clienteVendedor');
           }
           if (usuarioFactory.payload.rol == "vendedor") {
-            $state.go('menu.vendedorGrillaProductos');
+            alert("login ok: vendedor");
+            // $state.go('vendedor.vendedorInicio');
           }
         }
         else {
@@ -208,10 +210,10 @@ angular.module('miSitio')
   };
 })
 
-.controller('RegistroCtrl', function($scope, $state, growl, usuarioService, usuarioFactory) {
+.controller('AltaUsuarioCtrl', function($scope, $state, growl, usuarioService, usuarioFactory) {
 
   $scope.rol = usuarioFactory.payload.rol;
-  $scope.frmTitulo = 'Registro de Usuario';
+  $scope.frmTitulo = 'Alta de Usuario';
   $scope.btnCargarFotoPerfil = 'Cargar foto perfil';
   
   $scope.altaUsuarioData =
@@ -247,7 +249,7 @@ angular.module('miSitio')
       $scope.altaUsuarioData.foto = '';
     }
     
-    usuarioService.alta($scope.altaUsuarioData)
+    usuarioService.altaUsuario($scope.altaUsuarioData)
     .then( 
       function(respuesta) {          
         if (respuesta.estado == true) {
@@ -258,8 +260,8 @@ angular.module('miSitio')
           }
           if ($scope.rol == 'admin') {
             growl.success("Alta de usuario ok!", {ttl: 3000});
-            $state.go('menu.adminGrillaUsuarios');
-          }         
+            $state.go('admin.adminGrillaUsuarios');
+          }          
         }
         else {
           growl.error(respuesta.mensaje, {ttl: 3000});
@@ -293,18 +295,16 @@ angular.module('miSitio')
   $scope.rol = usuarioFactory.payload.rol;
   $scope.id = usuarioFactory.payload.id;
   $scope.urlimg = urlFactory.imgPerfilUsuario;
-  $scope.directivaGrillaDatos = {};
-  $scope.grillaTitulo = 'Lista de Usuarios';
-  // Fin Parámetros que se usan en la directiva
+  $scope.directivaGrillaUsuariosDatos = {};
 
-  $scope.traerTodo = function() {
-    $scope.traerTodoData = { accion: 'listado' };
+  $scope.traerTodosLosUsuarios = function() {
+    $scope.traerTodosLosUsuariosData = { accion: 'traerTodosLosUsuarios' };
     
-    usuarioService.listado($scope.traerTodoData)
+    usuarioService.traerTodosLosUsuarios($scope.traerTodosLosUsuariosData)
     .then( 
       function(respuesta) { 
         if (respuesta.estado == true) {
-          $scope.directivaGrillaDatos.lista = {datos: respuesta.datos};
+          $scope.directivaGrillaUsuariosDatos.lista = {datos: respuesta.datos};
         }
         else {
           growl.error(respuesta.mensaje, {ttl: 3000}); 
@@ -312,20 +312,20 @@ angular.module('miSitio')
       }
     );
   };
-  $scope.traerTodo();
+  $scope.traerTodosLosUsuarios();
+  // Fin Parámetros que se usan en la directiva
   
-  
-  $scope.borrarItem = function(item, index) {
+  $scope.borrarUsuario = function(usuario, index) {
 
-    $scope.borrarData = { idUsuario : item.id, accion : 'baja' };
+    $scope.borrarUsuarioData = { idUsuario : usuario.id, accion : 'borrarUsuario' };
 
-    if (confirm('Esta seguro que desea borrar el usuario '+item.id+'?')) {
-      usuarioService.baja($scope.borrarData)
+    if (confirm('Esta seguro que desea borrar el usuario '+usuario.id+'?')) {
+      usuarioService.borrarUsuario($scope.borrarUsuarioData)
       .then( 
         function(respuesta) { 
           if (respuesta.estado == true) {
             growl.success(respuesta.mensaje, {ttl: 3000});
-            $scope.directivaGrillaDatos.lista.datos.splice(index, 1);
+            $scope.directivaGrillaUsuariosDatos.lista.datos.splice(index, 1);
           }
           else {
             growl.error(respuesta.mensaje, {ttl: 3000}); 
@@ -337,129 +337,85 @@ angular.module('miSitio')
     } 
   };
 
-  $scope.editarItem = function(item) {
+  $scope.editarUsuario = function(usuario) {
 
-    $scope.frmTitulo = 'Editar Usuario';
-    $scope.btnModificarFoto = 'Modificar foto';   
+    $scope.rol = usuarioFactory.payload.rol;
+    $scope.frmEditarUsuarioTitulo = 'Editar Usuario';
+    $scope.btnModificarFotoUsuario = 'Modificar foto usuario';   
     
-    $scope.frmData =
+    $scope.editarUsuarioData =
     {
-      id: item.id,
-      nombre: item.nombre,
-      email: item.email,
-      password1: item.password,
-      password2: item.password,
-      rol: item.rol,
-      foto: urlFactory.imgPerfilUsuario +  item.foto,
-      accion: 'modificacion'
+      id: usuario.id,
+      nombre: usuario.nombre,
+      email: usuario.email,
+      password1: usuario.password,
+      password2: usuario.password,
+      rol: usuario.rol,
+      foto: urlFactory.imgPerfilUsuario +  usuario.foto,
+      accion: 'guardarUsuarioEditado'
     };
 
-    $scope.fotoAGuardar = $scope.frmData.foto;   
+    $scope.fotoUsuarioAGuardar = $scope.editarUsuarioData.foto;
 
-    $scope.guardarItemEditado = function() {     
+    $scope.modificarFotoUsuario = function(valor=null) {
     
-      if ($scope.imagenAbierta == 0) {
-        $scope.frmData.foto = '';
+      $scope.fotoUsuarioAGuardar = $scope.editarUsuarioData.foto;
+    
+      if ($scope.btnModificarFotoUsuario == 'Modificar foto usuario' && valor == null) {
+        $scope.btnModificarFotoUsuario = 'Cancelar modificación foto usuario';
+        $scope.cargaFotoUsuarioShow = true;
+        return;
+      }
+      if ($scope.btnModificarFotoUsuario == 'Cancelar modificación foto usuario' || valor == false) {
+        $scope.btnModificarFotoUsuario = 'Modificar foto usuario';
+        $scope.imagenUsuarioAbierta = 0;
+        $scope.imagenUsuarioElegida = '';
+        $scope.fotoUsuarioAGuardar = $scope.editarUsuarioData.foto;
+        $scope.cargaFotoUsuarioShow = false;
+      }
+    };
+
+    $scope.guardarUsuarioEditado = function() {     
+    
+      if ($scope.imagenUsuarioAbierta == 0) {
+        $scope.editarUsuarioData.foto = '';
       }
       else {
-        $scope.frmData.foto = $scope.fotoAGuardar;
+        $scope.editarUsuarioData.foto = $scope.fotoUsuarioAGuardar;
       }
       
-      usuarioService.modificacion($scope.frmData)
+      usuarioService.guardarUsuarioEditado($scope.editarUsuarioData)
       .then( 
         function(respuesta) {          
           if (respuesta.estado == true) {
             growl.success("Edición de usuario ok!", {ttl: 3000});
-            $scope.traerTodo();
+            $scope.traerTodosLosUsuarios();
           }
           else {
             growl.error(respuesta.mensaje, {ttl: 3000});
           }
         }
       );
-      $scope.cargaFotoShow = false;
-    };
-  };
-
-  
-  
-  
-  $scope.agregarItem = function() {
-
-    $scope.frmTitulo = 'Agregar Usuario';
-    $scope.btnModificarFoto = 'Modificar foto';
-
-    $scope.frmData =
-    {
-      nombre: 'Prueba',
-      email: 'prueba@sitio.com',
-      password1: '123',
-      password2: '123',
-      rol: 'comprador',
-      foto: urlFactory.imgPerfilUsuario + 'defaultPerfil.jpeg',
-      accion: 'alta'
+      $scope.cargaFotoUsuarioShow = false;
     };
 
-    $scope.fotoAGuardar = $scope.frmData.foto;
+    // ngImageCrop
+    $scope.imagenUsuarioElegida='';
+    $scope.imagenUsuarioAbierta = 0;
 
-    $scope.guardarItemAgregado = function() {
-    
-      if ($scope.imagenAbierta == 0) {
-        $scope.frmData.foto = '';
-      }
-      else {
-        $scope.frmData.foto = $scope.fotoAGuardar;
-      }
-    
-      usuarioService.alta($scope.frmData)
-      .then( 
-        function(respuesta) {          
-          if (respuesta.estado == true) {
-            growl.success("Nuevo usuario agregado ok!", {ttl: 3000});
-            $scope.traerTodo();       
-          }
-          else {
-            growl.error(respuesta.mensaje, {ttl: 3000});
-          }
-        }
-      );
+    var handleFileSelect=function(evt) {
+      var file=evt.currentTarget.files[0];
+      var reader = new FileReader();
+      reader.onload = function (evt) {
+        $scope.$apply(function($scope){
+          $scope.imagenUsuarioElegida=evt.target.result;
+        });
+      };
+      reader.readAsDataURL(file);
     };
+    angular.element(document.querySelector('#fileInput2')).on('change',handleFileSelect);
+    // fin ngImageCrop
   };
-
-  $scope.modificarFoto = function(valor=null) {
-    
-    $scope.fotoAGuardar = $scope.frmData.foto;
-  
-    if ($scope.btnModificarFoto == 'Modificar foto' && valor == null) {
-      $scope.btnModificarFoto = 'Cancelar modificación foto';
-      $scope.cargaFotoShow = true;
-      return;
-    }
-    if ($scope.btnModificarFoto == 'Cancelar modificación foto' || valor == false) {
-      $scope.btnModificarFoto = 'Modificar foto';
-      $scope.imagenAbierta = 0;
-      $scope.imagenElegida = '';
-      $scope.fotoAGuardar = $scope.frmData.foto;
-      $scope.cargaFotoShow = false;
-    }
-  };
-
-  // ngImageCrop
-  $scope.imagenElegida='';
-  $scope.imagenAbierta = 0;
-
-  var handleFileSelect=function(evt) {
-    var file=evt.currentTarget.files[0];
-    var reader = new FileReader();
-    reader.onload = function (evt) {
-      $scope.$apply(function($scope){
-        $scope.imagenElegida=evt.target.result;
-      });
-    };
-    reader.readAsDataURL(file);
-  };
-  angular.element(document.querySelector('#fileInput2')).on('change',handleFileSelect);
-  // fin ngImageCrop
 });
 
 

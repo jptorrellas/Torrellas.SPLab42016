@@ -4,7 +4,7 @@ angular.module('miSitio')
 
     return {
       scope:{
-        directivaGrillaDatos: '=directivaGrillaDatos',
+        directivaGrillaUsuariosDatos: '=directivagrillausuariosdatos',
         rol: '@rol',
         id: '@id',
         urlimg: '@urlimg'     

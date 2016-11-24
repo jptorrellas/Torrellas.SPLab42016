@@ -36,26 +36,25 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider)
 			controller:"LoginCtrl"
 		})
 
-		.state("registro", {
+		.state("altaUsuario", {
 			cache: false,
-			url:"/registro",
-			templateUrl:"templates/registro.html",
-			controller:"RegistroCtrl"
+			url:"/altaUsuario",
+			templateUrl:"templates/frmUsuario.html",
+			controller:"AltaUsuarioCtrl"
 		})
 
 
 		
 		// ADMIN
-		.state('menu', {
+		.state('admin', {
 			cache: false,
-			url: '/menu',
+			url: '/admin',
 			abstract: true,
 			templateUrl: 'templates/menu.html',
 			controller: 'MenuCtrl'
 		})
 
-		//Admin
-		.state('menu.adminGrillaUsuarios', {
+		.state('admin.adminGrillaUsuarios', {
 			cache: false,
 			url: '/grillaUsuarios',
 			views: {
@@ -66,7 +65,18 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider)
 			}
 		})
 
-		.state('menu.adminGrillaProductos', {
+		.state('admin.adminAltaUsuario', {
+			cache: false,
+			url: '/altaUsuario',
+			views: {
+			  'contenido': {
+			    templateUrl: 'templates/frmUsuario.html',
+			    controller: 'AltaUsuarioCtrl'
+			  }
+			}
+		})
+
+		.state('admin.adminGrillaProductos', {
 			cache: false,
 			url: '/grillaProductos',
 			views: {
@@ -77,30 +87,16 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider)
 			}
 		})
 
-		//Comprador
-		.state('menu.compradorGrillaProductos', {
+		.state('admin.adminAltaProducto', {
 			cache: false,
-			url: '/grillaProductos',
+			url: '/altaProducto',
 			views: {
 			  'contenido': {
-			    templateUrl: 'templates/grillaProductos.html',
-			    controller: 'GrillaProductosCtrl'
+			    templateUrl: 'templates/frmProducto.html',
+			    controller: 'AltaProductoCtrl'
 			  }
 			}
 		})
-
-		//Vendedor
-		.state('menu.vendedorGrillaProductos', {
-			cache: false,
-			url: '/grillaProductos',
-			views: {
-			  'contenido': {
-			    templateUrl: 'templates/grillaProductos.html',
-			    controller: 'GrillaProductosCtrl'
-			  }
-			}
-		})
-
 				
 			
 	$urlRouterProvider.otherwise("/login");

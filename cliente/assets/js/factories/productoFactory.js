@@ -1,6 +1,6 @@
 angular.module('miSitio')
 
-.factory('usuarioFactory', function () {
+.factory('productoFactory', function () {
 	
 	return {
  		payload : {}

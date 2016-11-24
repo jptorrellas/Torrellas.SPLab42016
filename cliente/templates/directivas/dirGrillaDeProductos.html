@@ -5,7 +5,7 @@
                 <h3 style="margin:0; color:white;"><i class="fa fa-tasks"></i>{{grillaTitulo}}</h3>
             </div>
             <div class="col-md-1">
-                <button class="btn btn-u" data-toggle="modal" data-target="#popupfrm" ng-click="agregarItem()"><i class="fa fa-plus"></i></button>
+                <button  ng-if="rol == 'admin' || rol == 'vendedor'" class="btn btn-u" data-toggle="modal" data-target="#popupfrm" ng-click="agregarItem()"><i class="fa fa-plus"></i></button>
             </div>
             <div class="col-md-1">
                 <button class="btn btn-u" ng-click="traerTodo()"><i class="fa fa-refresh"></i></button>
@@ -17,26 +17,22 @@
             <tr>
                 <th style="text-align:center">#</th>
                 <th style="text-align:center">FOTO</th>
-                <th>NOMBRE</th>
-                <th>EMAIL</th>
-                <th>ROL</th>
+                <th>DESCRIPCION</th>
                 <th ng-if="rol == 'admin'" style="text-align:center;">OPCIONES</th>
             </tr>
         </thead>
-        <tbody ng-repeat="item in directivaGrillaDatos.lista.datos" style="align:middle;">			
-			<tr ng-if="id != item.id">
-				<td style="text-align:center;">{{item.id}}</td>
-			    <td style="text-align:center !important;"><!-- <div style="width:50px; height:50px;"> --><img style="width:50px; height:50px;  border-radius:50%;" ng-src="{{urlimg}}{{item.foto}}"><!-- </div> --></td>
-			    <td>{{item.nombre}}</td>
-			    <td>{{item.email}}</td>
-			    <td>{{item.rol}}</td>
-			    <td ng-if="rol == 'admin'" style="text-align:center;">
+        <tbody ng-repeat="item in directivaGrillaDatos.lista.datos" style="align:middle;">          
+            <tr ng-if="id != item.id">
+                <td style="text-align:center;">{{item.id}}</td>
+                <td style="text-align:center !important;"><!-- <div style="width:50px; height:50px;"> --><img style="width:50px; height:50px;" ng-src="{{urlimg}}{{item.foto}}"><!-- </div> --></td>
+                <td>{{item.descripcion}}</td>
+                <td ng-if="rol == 'admin' || rol == 'vendedor'" style="text-align:center;">
                     <button class="btn btn-warning btn-xs" data-toggle="modal" data-target="#popupfrm" ng-click="editarItem(item);" ><i class="fa fa-pencil"></i> Editar</button>
                     <button class="btn btn-danger btn-xs" ng-click="borrarItem(item, $index);"><i class="fa fa-trash"></i> Borrar</button>
                 </td>
-			</tr>
-		</tbody>
-	</table>
+            </tr>
+        </tbody>
+    </table>
 
     <!-- Popup frm -->
     <div class="modal fade" id="popupfrm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;"> 
@@ -55,53 +51,18 @@
                         <form name="frm" novalidate>
                                 
                             <div class="input-group margin-bottom-20 center" style="width:100%;" ng-show="cargaFotoShow">
-                                <img ng-src="{{fotoAGuardar}}" class="rounded-x" style="height:100px; width:100px; border: 1px solid #ccc;" />
+                                <img ng-src="{{fotoAGuardar}}" class="" style="height:100px; width:100px; border: 1px solid #ccc;" />
                             </div>
 
 
                             <div class="input-group margin-bottom-20">
                                 <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
-                                <input name="email" type="email" class="form-control" placeholder="Email" ng-model="frmData.email" required/>
+                                <input name="descripcion" type="text" class="form-control" placeholder="Descripcion" ng-model="frmData.descripcion" required/>
                             </div>
-                            <div class="messages" ng-show="frm.$submitted || frm.email.$touched">
-                                <span ng-show="frm.email.$error.required">El campo es obligatorio.</span>
-                                <span ng-show="frm.email.$error.email">Formato de email incorrecto.</span>
-                            </div>
-
-                            
-                            <div class="input-group margin-bottom-20">
-                                <span class="input-group-addon"><i class="fa fa-user"></i></span>
-                                <input name="nombre" type="text" class="form-control" placeholder="Nombre" ng-model="frmData.nombre" required>
-                            </div>
-                            <div class="messages" ng-show="frm.$submitted || frm.nombre.$touched">
-                                <span ng-show="frm.nombre.$error.required">El campo es obligatorio.</span>
-                            </div>
-                            
-                            <div class="input-group margin-bottom-20">
-                                <span class="input-group-addon"><i class="fa fa-lock"></i></span>
-                                <input name="password1" type="password" class="form-control" placeholder="Ingrese Password" ng-model="frmData.password1" required>
-                            </div>
-                            <div class="messages" ng-show="frm.$submitted || frm.password1.$touched">
-                                <span ng-show="frm.password1.$error.required">El campo es obligatorio.</span>
+                            <div class="messages" ng-show="frm.$submitted || frm.descripcion.$touched">
+                                <span ng-show="frm.descripcion.$error.required">El campo es obligatorio.</span>
                             </div>
 
-                            <div class="input-group margin-bottom-20">
-                                <span class="input-group-addon"><i class="fa fa-lock"></i></span>
-                                <input name="password2" type="password" class="form-control" placeholder="Reingrese Password" ng-model="frmData.password2" required>
-                            </div>
-                            <div class="messages" ng-show="frm.$submitted || frm.password2.$touched">
-                                <span ng-show="frm.password2.$error.required">El campo es obligatorio.</span>
-                                <span ng-show="frmData.password1 != frmData.password2">Los passwords no coinciden.</span>
-                            </div>
-                    
-                            <label class="select" ng-if="rol == 'admin'">
-                                <select ng-model="frmData.rol">
-                                    <option value="admin">Administrador</option>
-                                    <option value="comprador">Comprador</option>
-                                    <option value="vendedor">Vendedor</option>
-                                </select>
-                                <i style="top:10px; background:none;"></i>
-                            </label>
 
                             <div class="row">
                                 <div class="col-md-12">
@@ -137,8 +98,8 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn-u btn-u-default" data-dismiss="modal" ng-click="modificarFoto(false)">Cerrar</button>
-                    <button ng-if="frmTitulo == 'Editar Usuario'" type="submit" class="btn-u btn-u-primary" ng-click="guardarItemEditado()" ng-disabled="frm.$invalid || frmData.password1 != frmData.password2" data-dismiss="modal">Modificar</button>
-                    <button ng-if="frmTitulo == 'Agregar Usuario'" type="submit" class="btn-u btn-u-primary" ng-click="guardarItemAgregado()" ng-disabled="frm.$invalid || frmData.password1 != frmData.password2" data-dismiss="modal">Agregar</button>
+                    <button ng-if="frmTitulo == 'Editar Producto'" type="submit" class="btn-u btn-u-primary" ng-click="guardarItemEditado()" ng-disabled="frm.$invalid || frmData.password1 != frmData.password2" data-dismiss="modal">Modificar</button>
+                    <button ng-if="frmTitulo == 'Agregar Producto'" type="submit" class="btn-u btn-u-primary" ng-click="guardarItemAgregado()" ng-disabled="frm.$invalid || frmData.password1 != frmData.password2" data-dismiss="modal">Agregar</button>
                 </div>
             </div>
         </div>

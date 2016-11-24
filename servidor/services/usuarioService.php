@@ -117,7 +117,7 @@ switch ($objRecibido->accion) {
 		}
 		break;
 
-	case 'altaUsuario':
+	case 'alta':
 		
 		ini_set('date.timezone','America/Buenos_Aires'); 
 		$fechaActual = date("Y-m-d_H-i-s");
@@ -172,7 +172,29 @@ switch ($objRecibido->accion) {
 		}
 		break;
 
-	case 'guardarUsuarioEditado':
+	case 'baja':
+    	
+    	$usuario = $crud->select("usuarios", "*", "id = '$objRecibido->idUsuario' && estado = 1");
+
+		if ($usuario != false && $usuario != null) {
+
+	    	if ($crud->update("usuarios", "estado = 0", "id = '$objRecibido->idUsuario'")) {
+	    		$respuesta['mensaje'] = 'ok';
+				echo json_encode($respuesta);
+	    	}
+	    	else {
+	    		$respuesta['mensaje'] = 'error';
+				echo json_encode($respuesta);
+	    	}
+	    }
+	    else {
+	    	$respuesta['mensaje'] = 'error';
+			echo json_encode($respuesta);
+	    }
+
+    	break;
+
+	case 'modificacion':
 		
 		ini_set('date.timezone','America/Buenos_Aires'); 
 		$fechaActual = date("Y-m-d_H-i-s");
@@ -233,31 +255,9 @@ switch ($objRecibido->accion) {
 				echo json_encode($respuesta);
 			}
 		}
-		break;
+		break;	
 
-	case 'borrarUsuario':
-    	
-    	$usuario = $crud->select("usuarios", "*", "id = '$objRecibido->idUsuario' && estado = 1");
-
-		if ($usuario != false && $usuario != null) {
-
-	    	if ($crud->update("usuarios", "estado = 0", "id = '$objRecibido->idUsuario'")) {
-	    		$respuesta['mensaje'] = 'ok';
-				echo json_encode($respuesta);
-	    	}
-	    	else {
-	    		$respuesta['mensaje'] = 'error';
-				echo json_encode($respuesta);
-	    	}
-	    }
-	    else {
-	    	$respuesta['mensaje'] = 'error';
-			echo json_encode($respuesta);
-	    }
-
-    	break;
-
-	case 'traerTodosLosUsuarios':
+	case 'listado':
 		
 		$tabla1 = 'usuarios';
 		$tabla2 = 'roles';
