@@ -21,7 +21,7 @@ class Crud extends DBConnection
 	/**
 	* Atributos
 	*/
-	private $arrayDeProteccion = ['select', 'insert', 'update', 'delete', 'drop', 'alter', 'altertable', 'create', 'grant', 'revoke', 'table', 'view', 'index'];
+	private $arrayDeProteccion = ['insert', 'update', 'delete', 'drop', 'alter', 'altertable', 'create', 'grant', 'revoke', 'table', 'view', 'index'];
 
 	function __construct(){}
 
@@ -81,15 +81,15 @@ class Crud extends DBConnection
 
 	/**
 	* Función: select
-	* @param string $tabla 
 	* @param string $campos
+	* @param string $tabla 
 	* @param string $condiciones
 	* @return object | false
 	*/
-	public function select($tabla, $campos, $condiciones=null)
+	public function select($campos, $tabla, $condiciones=null)
 	{
 		// Protege de SQL injection
-		if ($this->protectQuery([$tabla, $campos, $condiciones])) {
+		if ($this->protectQuery([$campos, $tabla, $condiciones])) {
 			// Conexión a BD
 			$conn = parent::connectBD();
 
@@ -115,15 +115,15 @@ class Crud extends DBConnection
 
 	/**
 	* Función: selectList
-	* @param string $tabla 
 	* @param string $campos
+	* @param string $tabla 
 	* @param string $condiciones
 	* @return object | null | false
 	*/
-	public function selectList($tabla, $campos, $condiciones)
+	public function selectList($campos, $tabla, $condiciones=null)
 	{
 		// Protege de SQL injection
-		if ($this->protectQuery([$tabla, $campos, $condiciones])) {
+		if ($this->protectQuery([$campos, $tabla, $condiciones])) {
 			// Conexión a BD
 			$conn = parent::connectBD();
 
@@ -148,9 +148,9 @@ class Crud extends DBConnection
 
 	/**
 	* Función: selectJoin
+	* @param string $campos
 	* @param string $tabla1
 	* @param string $tabla2
-	* @param string $campos
 	* @param string $condiciones
 	* @return object | null | false
 	*/

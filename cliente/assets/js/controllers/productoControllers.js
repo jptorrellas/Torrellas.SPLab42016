@@ -163,13 +163,5 @@ angular.module('miSitio')
   };
   angular.element(document.querySelector('#fileInput2')).on('change',handleFileSelect);
   // fin ngImageCrop
+
 });
-
-
-
-
-
-
-
-
-

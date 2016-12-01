@@ -44,8 +44,6 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider)
 		})
 
 
-		
-		// ADMIN
 		.state('menu', {
 			cache: false,
 			url: '/menu',
@@ -54,7 +52,7 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider)
 			controller: 'MenuCtrl'
 		})
 
-		//Admin
+		//ADMIN
 		.state('menu.adminGrillaUsuarios', {
 			cache: false,
 			url: '/grillaUsuarios',
@@ -77,7 +75,7 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider)
 			}
 		})
 
-		//Comprador
+		//COMPRADOR
 		.state('menu.compradorGrillaProductos', {
 			cache: false,
 			url: '/grillaProductos',
@@ -89,7 +87,7 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider)
 			}
 		})
 
-		//Vendedor
+		//VENDEDOR
 		.state('menu.vendedorGrillaProductos', {
 			cache: false,
 			url: '/grillaProductos',

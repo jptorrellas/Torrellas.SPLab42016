@@ -1,5 +1,5 @@
 <!--=== Content Part ===-->    
-<div class="container" style="background-image:url('assets/img/bg/11.jpg'); width:100%; height:100%;">
+<div class="container" style="background-image:url('assets/img/bg/bg-login.jpg'); width:100%; height:100%;">
     <!--Reg Block-->
     <div class="reg-block">
         <div class="reg-block-header">
@@ -16,6 +16,7 @@
 
         <form name="frmLogin" novalidate>
 
+            <!-- email -->
             <div class="input-group margin-bottom-20">
                 <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
                 <input name="email" type="email" class="form-control" placeholder="Email" ng-model="loginData.email" required/>
@@ -25,7 +26,7 @@
                 <span ng-show="frmLogin.email.$error.email">Formato de email incorrecto.</span>
             </div>
 
-            
+            <!-- nombre -->
             <div class="input-group margin-bottom-20">
                 <span class="input-group-addon"><i class="fa fa-user"></i></span>
                 <input name="nombre" type="text" class="form-control" placeholder="Nombre" ng-model="loginData.nombre" required/>
@@ -34,6 +35,7 @@
                 <span ng-show="frmLogin.nombre.$error.required">El campo es obligatorio.</span>
             </div>
             
+            <!-- password -->
             <div class="input-group margin-bottom-20">
                 <span class="input-group-addon"><i class="fa fa-lock"></i></span>
                 <input name="password" type="password" class="form-control" placeholder="Password" ng-model="loginData.password" required/>
@@ -43,6 +45,7 @@
             </div>
             <hr>
 
+            <!-- btn login -->
             <div class="row">
                 <div class="col-md-10 col-md-offset-1">
                     <button type="submit" class="btn-u btn-block" ng-click="login()" ng-disabled="frmLogin.$invalid">Log In</button>
@@ -50,7 +53,7 @@
             </div>
         </form>
 
-        
+        <!-- btn recuperar password -->
         <div class="row" style="text-align:center;">
             <div class="col-md-10 col-md-offset-1">
                 <a href="" data-toggle="modal" data-target="#popupRecuperarPassword"><h4>Olvidó su password?</h4></a>

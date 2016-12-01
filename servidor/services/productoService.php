@@ -28,10 +28,11 @@ $crud = new Crud;
  * AYUDA FUNCIONES CRUD: tODOS LOS PARAMETROS SON STRING
  * 
  * insert($tabla, $campos, $valores)
- * select($tabla, $campos, $condiciones)
+ * select($campos, $tabla, $condiciones)
+ * selectList($campos, $tabla, $condiciones)
+ * selectJoin($campos, $tabla1, $tabla2, $condiciones)
  * update($tabla, $camposYvalores, $condiciones)
  * delete($tabla, $condiciones)
- * selectJoin($campos, $tabla1, $tabla2, $condiciones)
 */
 
 switch ($objRecibido->accion) {
@@ -43,7 +44,7 @@ switch ($objRecibido->accion) {
 		$fechaActual = date("Y-m-d_H-i-s");
 	
 
-		$producto = $crud->select("productos", "*", "descripcion = '$objRecibido->descripcion'");
+		$producto = $crud->select("*", "productos", "descripcion = '$objRecibido->descripcion'");
 		
 		if ($producto != null) {
 			$respuesta['mensaje'] = 'error';
@@ -53,7 +54,7 @@ switch ($objRecibido->accion) {
 
 			if($crud->insert("productos", "descripcion, fecha_alta", "'$objRecibido->descripcion', '$fechaActual'")) {
 
-				$productoCreado = $crud->select("productos", "id", "descripcion = '$objRecibido->descripcion'");
+				$productoCreado = $crud->select("id", "productos", "descripcion = '$objRecibido->descripcion'");
 
 				if (isset($objRecibido->foto) && $objRecibido->foto != null && $objRecibido->foto != '') {
 					
@@ -91,7 +92,7 @@ switch ($objRecibido->accion) {
 
 	case 'baja':
     	
-    	$producto = $crud->select("productos", "*", "id = '$objRecibido->idProducto' && estado = 1");
+    	$producto = $crud->select("*", "productos", "id = '$objRecibido->idProducto' && estado = 1");
 
 		if ($producto != false && $producto != null) {
 
@@ -117,7 +118,7 @@ switch ($objRecibido->accion) {
 		$fechaActual = date("Y-m-d_H-i-s");
 	
 
-		$producto = $crud->select("productos", "*", "id = '$objRecibido->id' && estado = 0");
+		$producto = $crud->select("*", "productos", "id = '$objRecibido->id' && estado = 0");
 		// Si no existe el usuario o esta en estado 0
 		if ($producto != null) {
 			$respuesta['mensaje'] = 'error. no existe el producto';
@@ -131,7 +132,7 @@ switch ($objRecibido->accion) {
 				$crud->update("productos", "descripcion = '$objRecibido->descripcion'", "id = '$objRecibido->id'");
 
 				// Trae datos actualizados
-				$productoActualizado = $crud->select("productos", "*", "id = '$objRecibido->id'");
+				$productoActualizado = $crud->select("*", "productos", "id = '$objRecibido->id'");
 				// trae descricion de rol
 
 				$respuesta['mensaje'] = 'ok';
@@ -157,7 +158,7 @@ switch ($objRecibido->accion) {
 				$crud->update("productos", "descripcion = '$objRecibido->descripcion', foto = '$nombreFoto'", "id = '$objRecibido->id'");
 
 				// Trae datos actualizados
-				$productoActualizado = $crud->select("productos", "*", "id = '$objRecibido->id'");
+				$productoActualizado = $crud->select("*", "productos", "id = '$objRecibido->id'");
 
 				$respuesta['mensaje'] = 'ok';
 				$respuesta['datos'] = $productoActualizado;
@@ -169,7 +170,7 @@ switch ($objRecibido->accion) {
 	case 'listado':
 	
 
-		$listaElementos = $crud->selectList("productos", "*", "estado = 1");
+		$listaElementos = $crud->selectList("*", "productos", "estado = 1");
     	
     	if ($listaElementos != null && $listaElementos != false) {
 

@@ -222,7 +222,7 @@ angular.module('miSitio')
     password2: '123',
     rol: 'comprador',
     foto: '',
-    accion: 'altaUsuario'
+    accion: 'alta'
   };
 
   $scope.cargarFotoPerfil = function() {
@@ -256,10 +256,10 @@ angular.module('miSitio')
             growl.success("Se acaba de registrar en el sistema! Ya puede acceder con sus credenciales.", {ttl: 5000});
             $state.go('login');
           }
-          if ($scope.rol == 'admin') {
-            growl.success("Alta de usuario ok!", {ttl: 3000});
-            $state.go('menu.adminGrillaUsuarios');
-          }         
+          // if ($scope.rol == 'admin') {
+          //   growl.success("Alta de usuario ok!", {ttl: 3000});
+          //   $state.go('menu.adminGrillaUsuarios');
+          // }         
         }
         else {
           growl.error(respuesta.mensaje, {ttl: 3000});
@@ -340,7 +340,7 @@ angular.module('miSitio')
   $scope.editarItem = function(item) {
 
     $scope.frmTitulo = 'Editar Usuario';
-    $scope.btnModificarFoto = 'Modificar foto';   
+    $scope.btnModificarFoto = 'Modificar foto';  
     
     $scope.frmData =
     {
@@ -460,13 +460,5 @@ angular.module('miSitio')
   };
   angular.element(document.querySelector('#fileInput2')).on('change',handleFileSelect);
   // fin ngImageCrop
+
 });
-
-
-
-
-
-
-
-
-

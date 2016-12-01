@@ -18,7 +18,7 @@
                 <th style="text-align:center">#</th>
                 <th style="text-align:center">FOTO</th>
                 <th>DESCRIPCION</th>
-                <th ng-if="rol == 'admin'" style="text-align:center;">OPCIONES</th>
+                <th ng-if="rol == 'admin' || rol == 'vendedor'" style="text-align:center;">OPCIONES</th>
             </tr>
         </thead>
         <tbody ng-repeat="item in directivaGrillaDatos.lista.datos" style="align:middle;">          
@@ -27,8 +27,8 @@
                 <td style="text-align:center !important;"><!-- <div style="width:50px; height:50px;"> --><img style="width:50px; height:50px;" ng-src="{{urlimg}}{{item.foto}}"><!-- </div> --></td>
                 <td>{{item.descripcion}}</td>
                 <td ng-if="rol == 'admin' || rol == 'vendedor'" style="text-align:center;">
-                    <button class="btn btn-warning btn-xs" data-toggle="modal" data-target="#popupfrm" ng-click="editarItem(item);" ><i class="fa fa-pencil"></i> Editar</button>
-                    <button class="btn btn-danger btn-xs" ng-click="borrarItem(item, $index);"><i class="fa fa-trash"></i> Borrar</button>
+                    <button class="btn btn-warning btn-xs rounded-x" style="height:30px; width:30px;" title="Editar" data-toggle="modal" data-target="#popupfrm" ng-click="editarItem(item);" ><i class="fa fa-pencil"></i></button>
+                    <button class="btn btn-danger btn-xs rounded-x" style="height:30px; width:30px;" title="Borrar" ng-click="borrarItem(item, $index);"><i class="fa fa-trash"></i></button>
                 </td>
             </tr>
         </tbody>
@@ -47,14 +47,14 @@
                     
                     <div class="reg-block" style="width:90%;">
 
-                        <!-- form   -->
+                        <!-- form  -->
                         <form name="frm" novalidate>
                                 
                             <div class="input-group margin-bottom-20 center" style="width:100%;" ng-show="cargaFotoShow">
                                 <img ng-src="{{fotoAGuardar}}" class="" style="height:100px; width:100px; border: 1px solid #ccc;" />
                             </div>
 
-
+                            <!-- descripcion -->
                             <div class="input-group margin-bottom-20">
                                 <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
                                 <input name="descripcion" type="text" class="form-control" placeholder="Descripcion" ng-model="frmData.descripcion" required/>
@@ -63,7 +63,7 @@
                                 <span ng-show="frm.descripcion.$error.required">El campo es obligatorio.</span>
                             </div>
 
-
+                            <!-- btn modificar foto -->
                             <div class="row">
                                 <div class="col-md-12">
                                     <button type="button" class="btn btn-default btn-block" ng-model="btnModificarFoto" ng-click="modificarFoto()">{{btnModificarFoto}}</button>
@@ -90,7 +90,7 @@
                                 </div>     
                             </div>
                         </form>
-                        <!-- fin form editar usuario -->
+                        <!-- fin form -->
                                        
                     </div>
                     

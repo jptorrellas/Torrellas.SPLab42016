@@ -28,23 +28,24 @@ $crud = new Crud;
  * AYUDA FUNCIONES CRUD: tODOS LOS PARAMETROS SON STRING
  * 
  * insert($tabla, $campos, $valores)
- * select($tabla, $campos, $condiciones)
+ * select($campos, $tabla, $condiciones)
+ * selectList($campos, $tabla, $condiciones)
+ * selectJoin($campos, $tabla1, $tabla2, $condiciones)
  * update($tabla, $camposYvalores, $condiciones)
  * delete($tabla, $condiciones)
- * selectJoin($campos, $tabla1, $tabla2, $condiciones)
 */
 
 switch ($objRecibido->accion) {
 	
 	case 'login':
 
-		$usuario = $crud->select("usuarios", "*", "email = '$objRecibido->email' && password = '$objRecibido->password' && nombre = '$objRecibido->nombre'&& estado = 1");
+		$usuario = $crud->select("*", "usuarios", "email = '$objRecibido->email' && password = '$objRecibido->password' && nombre = '$objRecibido->nombre'&& estado = 1");
 
 		if ($usuario != false && $usuario != null) {
 			// Guarda el registro del login
 			// $crud->insert("registro_logins", "id_usuario, dispositivo_usuario", "'$usuario->id', '$objRecibido->dispositivo'");
 			// Trae la descripción del rol
-			$rolDescripcion = $crud->select("roles", "descripcion", "id = '$usuario->id_rol'");
+			$rolDescripcion = $crud->select("descripcion", "roles", "id = '$usuario->id_rol'");
 
 			// TOKEN
 			$key = 'miToken';
@@ -72,7 +73,7 @@ switch ($objRecibido->accion) {
 
 	case 'recuperaPassword':
 		
-		$usuario = $crud->select("usuarios", "*", "email = '$objRecibido->email' && estado = 1");
+		$usuario = $crud->select("*", "usuarios", "email = '$objRecibido->email' && estado = 1");
 
 		if ($usuario != null && $usuario != false) {					
 			// ENVIO MAIL
@@ -123,7 +124,7 @@ switch ($objRecibido->accion) {
 		$fechaActual = date("Y-m-d_H-i-s");
 	
 
-		$usuario = $crud->select("usuarios", "*", "email = '$objRecibido->email'");
+		$usuario = $crud->select("*", "usuarios", "email = '$objRecibido->email'");
 		// Si existe un usuario con ese mail devuelve un error
 		if ($usuario != null) {
 			$respuesta['mensaje'] = 'error';
@@ -132,11 +133,11 @@ switch ($objRecibido->accion) {
 		else {
 			
 			// trae descricion de rol
-			$idRol = $crud->select("roles", "id", "descripcion = '$objRecibido->rol'");
+			$idRol = $crud->select("id", "roles", "descripcion = '$objRecibido->rol'");
 
 			if($crud->insert("usuarios", "nombre, email, password, id_rol, fecha_alta", "'$objRecibido->nombre', '$objRecibido->email', '$objRecibido->password1', '$idRol->id', '$fechaActual'")) {
 
-				$usuarioCreado = $crud->select("usuarios", "id", "email = '$objRecibido->email'");
+				$usuarioCreado = $crud->select("id", "usuarios", "email = '$objRecibido->email'");
 
 				if (isset($objRecibido->foto) && $objRecibido->foto != null && $objRecibido->foto != '') {
 					
@@ -174,7 +175,7 @@ switch ($objRecibido->accion) {
 
 	case 'baja':
     	
-    	$usuario = $crud->select("usuarios", "*", "id = '$objRecibido->idUsuario' && estado = 1");
+    	$usuario = $crud->select("*", "usuarios", "id = '$objRecibido->idUsuario' && estado = 1");
 
 		if ($usuario != false && $usuario != null) {
 
@@ -200,7 +201,7 @@ switch ($objRecibido->accion) {
 		$fechaActual = date("Y-m-d_H-i-s");
 	
 
-		$usuario = $crud->select("usuarios", "*", "id = '$objRecibido->id' && estado = 0");
+		$usuario = $crud->select("*", "usuarios", "id = '$objRecibido->id' && estado = 0");
 		// Si no existe el usuario o esta en estado 0
 		if ($usuario != null) {
 			$respuesta['mensaje'] = 'error. no existe el usuario';
@@ -209,7 +210,7 @@ switch ($objRecibido->accion) {
 		else {
 			
 			// trae id de rol
-			$idRol = $crud->select("roles", "id", "descripcion = '$objRecibido->rol'");
+			$idRol = $crud->select("id", "roles", "descripcion = '$objRecibido->rol'");
 
 			// Si no actualizó la foto
 			if ($objRecibido->foto == '') {
@@ -217,9 +218,9 @@ switch ($objRecibido->accion) {
 				$crud->update("usuarios", "nombre = '$objRecibido->nombre', email = '$objRecibido->email', password = '$objRecibido->password1', id_rol = '$idRol->id'", "id = '$objRecibido->id'");
 
 				// Trae datos actualizados
-				$usuarioActualizado = $crud->select("usuarios", "*", "id = '$objRecibido->id'");
+				$usuarioActualizado = $crud->select("*", "usuarios", "id = '$objRecibido->id'");
 				// trae descricion de rol
-				$descripcionRol = $crud->select("roles", "descripcion", "id = '$usuarioActualizado->id_rol'");
+				$descripcionRol = $crud->select("descripcion", "roles", "id = '$usuarioActualizado->id_rol'");
 				$usuarioActualizado->rol = $descripcionRol->descripcion;
 
 				$respuesta['mensaje'] = 'ok';
@@ -245,9 +246,9 @@ switch ($objRecibido->accion) {
 				$crud->update("usuarios", "nombre = '$objRecibido->nombre', email = '$objRecibido->email', password = '$objRecibido->password1', foto = '$nombreFoto', id_rol = '$idRol->id'", "id = '$objRecibido->id'");
 
 				// Trae datos actualizados
-				$usuarioActualizado = $crud->select("usuarios", "*", "id = '$objRecibido->id'");
+				$usuarioActualizado = $crud->select("*", "usuarios", "id = '$objRecibido->id'");
 				// trae descricion de rol
-				$descripcionRol = $crud->select("roles", "descripcion", "id = '$usuarioActualizado->id_rol'");
+				$descripcionRol = $crud->select("descripcion", "roles", "id = '$usuarioActualizado->id_rol'");
 				$usuarioActualizado->rol = $descripcionRol->descripcion;
 
 				$respuesta['mensaje'] = 'ok';
@@ -259,12 +260,26 @@ switch ($objRecibido->accion) {
 
 	case 'listado':
 		
-		$tabla1 = 'usuarios';
-		$tabla2 = 'roles';
-		$campos = 'usuarios.id, usuarios.nombre, usuarios.email, usuarios.password, usuarios.foto, roles.descripcion as rol';
-		$condicion = "usuarios.id_rol = roles.id WHERE usuarios.estado = 1";
+		// $tabla1 = 'usuarios';
+		// $tabla2 = 'roles';
+		// $campos = 'usuarios.id, usuarios.nombre, usuarios.email, usuarios.password, usuarios.foto, roles.descripcion as rol';
+		// $condicion = "usuarios.id_rol = roles.id WHERE usuarios.estado = 1";
 
-		$listaElementos = $crud->selectJoin("$campos", "$tabla1", "$tabla2", "$condicion");
+		// $listaElementos = $crud->selectJoin("$campos", "$tabla1", "$tabla2", "$condicion");
+  //   	if ($listaElementos != null && $listaElementos != false) {
+
+  //   		$respuesta['mensaje'] = 'ok';
+		// 	$respuesta['datos'] = $listaElementos;
+		// 	echo json_encode($respuesta);
+  //   	}
+  //   	else {
+  //   		$respuesta['mensaje'] = 'error';
+		// 	echo json_encode($respuesta);
+  //   	}
+		// break;
+		
+		$listaElementos = $crud->selectList("usuarios.*, roles.descripcion as rol", "usuarios, roles", "usuarios.id_rol = roles.id AND estado = 1");
+    	
     	if ($listaElementos != null && $listaElementos != false) {
 
     		$respuesta['mensaje'] = 'ok';
